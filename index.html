@@ -480,12 +480,12 @@
         // Check if it's proposal day - TEMPORARILY SET TO TRUE FOR PREVIEW
         function isProposalDay() {
             // Uncomment the lines below and comment out "return true;" for actual use
-            // const today = new Date();
-            // const proposalDate = new Date('2025-07-14');
-            // return today.toDateString() === proposalDate.toDateString();
+            const today = new Date();
+            const proposalDate = new Date('2025-07-14');
+            return today.toDateString() === proposalDate.toDateString();
 
             // PREVIEW MODE: Shows what July 14th will look like
-            return true;
+            // return true;
         }
 
         // Apply proposal day styling
