@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猪猪's Love</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.02) 0%, transparent 50%),
+                linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.02) 1px, transparent 0);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 120%;
+            height: 120%;
+            background:
+                radial-gradient(circle at 25% 25%, rgba(239, 68, 68, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 75% 25%, rgba(236, 72, 153, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 25% 75%, rgba(59, 130, 246, 0.04) 0%, transparent 25%),
+                radial-gradient(circle at 50% 10%, rgba(34, 197, 94, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 60%, rgba(251, 146, 60, 0.04) 0%, transparent 25%);
+            animation: backgroundFloat 25s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            20% { transform: translate(-3%, 2%) rotate(1deg) scale(1.02); }
+            40% { transform: translate(2%, -3%) rotate(-0.5deg) scale(0.98); }
+            60% { transform: translate(-1%, 3%) rotate(0.8deg) scale(1.01); }
+            80% { transform: translate(3%, -1%) rotate(-0.3deg) scale(0.99); }
+        }
+
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(239, 68, 68, 0.1));
+            animation: orbFloat 15s infinite ease-in-out;
+            backdrop-filter: blur(1px);
+        }
+
+        .orb:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .orb:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        .orb:nth-child(4) {
+            width: 35px;
+            height: 35px;
+            top: 40%;
+            right: 30%;
+            animation-delay: -3s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-10px) translateX(-15px) scale(0.9); opacity: 0.4; }
+            75% { transform: translateY(15px) translateX(5px) scale(1.05); opacity: 0.6; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(239, 68, 68, 0.15);
+            animation: float 8s infinite linear;
+        }
+
+        /* Special proposal day floating hearts - more intense */
+        .proposal-day .floating-heart {
+            color: rgba(239, 68, 68, 0.4);
+            font-size: 32px;
+            animation-duration: 6s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .time-tracker {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px 32px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            z-index: 2;
+            position: relative;
+        }
+
+        .time-tracker h3 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .time-display {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 60px;
+            text-align: center;
+            color: #1e293b;
+            letter-spacing: 0.02em;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .heart-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .heart {
+            font-size: 6rem;
+            animation: heartbeat 2s ease-in-out infinite;
+            filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        /* Special styling for proposal day heart */
+        .proposal-day .heart {
+            font-size: 8rem;
+            animation: proposalHeartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 8px 25px rgba(239, 68, 68, 0.6));
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .heart:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 16px rgba(239, 68, 68, 0.4));
+        }
+
+        .proposal-day .heart:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 10px 30px rgba(239, 68, 68, 0.8));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes proposalHeartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05); }
+            50% { transform: scale(1.08); }
+            75% { transform: scale(1.05); }
+        }
+
+        .proposal-message {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px 60px;
+            margin-top: 60px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Special proposal day message styling */
+        .proposal-day .proposal-message {
+            background: rgba(255, 240, 245, 0.98);
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15);
+            animation: proposalGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes proposalGlow {
+            0% { box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15); }
+            100% { box-shadow: 0 16px 50px rgba(239, 68, 68, 0.25); }
+        }
+
+        .proposal-message h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1e293b;
+            letter-spacing: -0.01em;
+        }
+
+        .proposal-day .proposal-message h2 {
+            font-size: 2.5rem;
+            color: #dc2626;
+            text-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+        }
+
+        .proposal-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .proposal-day .proposal-message p {
+            font-size: 1.3rem;
+            color: #7c2d12;
+            font-weight: 500;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        /* More sparkles on proposal day */
+        .proposal-day .sparkle {
+            animation-duration: 1.5s;
+            background: radial-gradient(circle, #ef4444, #dc2626);
+            width: 3px;
+            height: 3px;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 0.6; transform: scale(1); }
+        }
+
+        /* Heart shower effect for proposal day */
+        .heart-shower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .shower-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: shower 4s linear infinite;
+        }
+
+        @keyframes shower {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .heart { font-size: 4rem; }
+            .proposal-day .heart { font-size: 5rem; }
+            .proposal-message { padding: 30px 40px; margin: 30px 20px; }
+            .proposal-message h2 { font-size: 1.75rem; }
+            .proposal-day .proposal-message h2 { font-size: 2rem; }
+            .proposal-message p { font-size: 1rem; }
+            .proposal-day .proposal-message p { font-size: 1.1rem; }
+            .time-tracker { padding: 20px 24px; margin: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="heart-shower" id="heartShower"></div>
+
+    <div class="container">
+        <div class="time-tracker">
+            <h3>Our Love Story Started</h3>
+            <div class="time-display" id="timeDisplay">Loading...</div>
+        </div>
+
+        <h1 class="title">猪猪's Love</h1>
+
+        <div class="heart-container">
+            <div class="heart" id="heart">❤️</div>
+        </div>
+
+        <div class="proposal-message" id="proposalMessage">
+            <h2 id="proposalTitle">Loading...</h2>
+            <p id="proposalText">Our love story continues...</p>
+        </div>
+    </div>
+
+    <script>
+        // Heart variations for different days
+        const hearts = ['❤️', '💖', '💝', '💗', '💕', '💘', '🧡', '💛', '💚', '💙', '💜', '🤍', '🖤', '💯'];
+
+        // Special hearts for proposal day
+        const proposalHearts = ['💖', '💕', '💗', '💝', '❤️'];
+
+        // Love phrases for random display (50+ quotes)
+        const loveQuotes = [
+            { title: "Every Love Story", text: "Every love story is beautiful, but ours is my favorite" },
+            { title: "You Are My Today", text: "You are my today and all of my tomorrows" },
+            { title: "Home Is", text: "Home isn't a place, it's a person. You are my home" },
+            { title: "Perfect Together", text: "We're not perfect, but we're perfect together" },
+            { title: "My Heart", text: "In your smile, I see something more beautiful than stars" },
+            { title: "Forever Yours", text: "I choose you. And I'll choose you over and over" },
+            { title: "Best Friend", text: "You're my person, my best friend, my everything" },
+            { title: "Love Language", text: "Your laugh is my favorite love language" },
+            { title: "Adventure", text: "Life with you is my greatest adventure" },
+            { title: "Lucky Me", text: "How lucky I am to have something that makes saying goodbye so hard" },
+            { title: "Endless Love", text: "I love you more than yesterday, less than tomorrow" },
+            { title: "Together", text: "Together is my favorite place to be" },
+            { title: "Magic Moments", text: "Every moment with you feels like magic" },
+            { title: "Soulmate", text: "You're not just my love, you're my soulmate" },
+            { title: "Dream Come True", text: "You are my dream come true" },
+            { title: "Better Half", text: "You make me a better person just by being yourself" },
+            { title: "Always & Forever", text: "I want all of my lasts to be with you" },
+            { title: "My Everything", text: "You are my sun, my moon, and all my stars" },
+            { title: "Heart's Desire", text: "My heart is perfect because you are in it" },
+            { title: "Love Story", text: "Our love story is my favorite fairy tale" },
+            { title: "Infinite Love", text: "I love you to infinity and beyond" },
+            { title: "Sweet Dreams", text: "You're the first thing I think of when I wake up" },
+            { title: "True Love", text: "True love never ends, and ours is just beginning" },
+            { title: "Missing You", text: "Even when we're together, I miss you" },
+            { title: "Perfect Match", text: "We fit together like puzzle pieces" },
+            { title: "Beautiful Soul", text: "I fell in love with your soul before I knew your name" },
+            { title: "Grateful Heart", text: "My heart is full of gratitude for you" },
+            { title: "Special Someone", text: "You're not just someone special, you're my someone" },
+            { title: "Love Grows", text: "Every day I love you more than the day before" },
+            { title: "My Treasure", text: "You are my greatest treasure and my sweetest blessing" },
+            { title: "Butterflies", text: "You still give me butterflies every single day" },
+            { title: "Safe Haven", text: "In your arms, I've found my safe haven" },
+            { title: "Meant To Be", text: "We were meant to be together, I'm sure of it" },
+            { title: "Love's Power", text: "Your love gives me strength to conquer anything" },
+            { title: "Happiness", text: "You are my happiness in human form" },
+            { title: "Forever Mine", text: "I want to be yours forever and a day" },
+            { title: "Love Letters", text: "Your eyes tell love stories that words could never capture" },
+            { title: "Heart Skip", text: "You make my heart skip beats and my soul sing" },
+            { title: "Lucky Stars", text: "I must have wished on every lucky star to find you" },
+            { title: "Perfect Love", text: "Our love isn't perfect, but it's perfectly ours" },
+            { title: "Sweet Moments", text: "The sweetest moments are the ones we share together" },
+            { title: "Love's Promise", text: "I promise to love you through all seasons of life" },
+            { title: "My Anchor", text: "You are my anchor in this chaotic world" },
+            { title: "Love's Journey", text: "Our love journey has just begun" },
+            { title: "Heart's Home", text: "My heart has found its home in you" },
+            { title: "Endless Joy", text: "You bring endless joy to my ordinary days" },
+            { title: "Love's Miracle", text: "You are the miracle I never knew I needed" },
+            { title: "Together Always", text: "With you, I want to write our forever story" },
+            { title: "Love's Gift", text: "Your love is the greatest gift I've ever received" },
+            { title: "My Universe", text: "You are my entire universe in one person" },
+            { title: "Sweet Love", text: "Your love is sweeter than honey, warmer than sunshine" },
+            { title: "Perfect Timing", text: "We found each other at exactly the right time" },
+            { title: "Love's Wonder", text: "I wonder how I lived before I met you" }
+        ];
+
+        // Check if it's proposal day - TEMPORARILY SET TO TRUE FOR PREVIEW
+        function isProposalDay() {
+            // Uncomment the lines below and comment out "return true;" for actual use
+            // const today = new Date();
+            // const proposalDate = new Date('2025-07-14');
+            // return today.toDateString() === proposalDate.toDateString();
+
+            // PREVIEW MODE: Shows what July 14th will look like
+            return true;
+        }
+
+        // Apply proposal day styling
+        function applyProposalDayStyle() {
+            if (isProposalDay()) {
+                document.body.classList.add('proposal-day');
+                // Create heart shower effect
+                createHeartShower();
+                // Increase floating hearts frequency
+                setInterval(createFloatingHeart, 200);
+            }
+        }
+
+        // Create heart shower for proposal day
+        function createHeartShower() {
+            if (!isProposalDay()) return;
+
+            setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.className = 'shower-heart';
+                        heart.textContent = proposalHearts[Math.floor(Math.random() * proposalHearts.length)];
+                        heart.style.left = Math.random() * 100 + '%';
+                        heart.style.animationDelay = Math.random() * 2 + 's';
+                        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                        heart.style.color = `hsl(${Math.random() * 60 + 320}, 70%, 60%)`;
+                        document.getElementById('heartShower').appendChild(heart);
+
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 5000);
+                    }, i * 200);
+                }
+            }, 800);
+        }
+
+        // Time tracking from March 9th (3.9)
+        function updateTimeTracker() {
+            const startDate = new Date('2024-03-09');
+            const now = new Date();
+            const timeDiff = now - startDate;
+
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            document.getElementById('timeDisplay').innerHTML = `${days} days`;
+        }
+
+        // Update proposal message based on date
+        function updateProposalMessage() {
+            if (isProposalDay()) {
+                document.getElementById('proposalTitle').textContent = "Will You Marry Me?";
+                document.getElementById('proposalText').textContent = "Let's start our forever together ❤️";
+            } else {
+                // Show random love quote
+                const randomIndex = Math.floor(Math.random() * loveQuotes.length);
+                const quote = loveQuotes[randomIndex];
+                document.getElementById('proposalTitle').textContent = quote.title;
+                document.getElementById('proposalText').textContent = quote.text;
+            }
+        }
+
+        // Change heart based on day - FIXED for proposal day
+        function setDailyHeart() {
+            if (isProposalDay()) {
+                // FIXED: Always show the classic red heart on proposal day
+                document.getElementById('heart').textContent = '❤️';
+            } else {
+                // Regular daily rotation for other days
+                const today = new Date();
+                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+                const heartIndex = dayOfYear % hearts.length;
+                document.getElementById('heart').textContent = hearts[heartIndex];
+            }
+        }
+
+        // Create floating hearts
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+
+            if (isProposalDay()) {
+                heart.textContent = proposalHearts[Math.floor(Math.random() * proposalHearts.length)];
+            } else {
+                heart.textContent = '💕';
+            }
+
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            document.getElementById('floatingHearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Create sparkles with more variety
+        function createSparkles() {
+            const sparkleCount = isProposalDay() ? 50 : 30;
+
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(sparkle);
+            }
+        }
+
+        // Initialize everything
+        updateTimeTracker();
+        setDailyHeart();
+        updateProposalMessage();
+        applyProposalDayStyle();
+        createSparkles();
+
+        // Update time every minute
+        setInterval(updateTimeTracker, 60000);
+
+        // Update proposal message every hour (in case date changes)
+        setInterval(updateProposalMessage, 3600000);
+
+        // Create floating hearts periodically
+        const heartInterval = isProposalDay() ? 300 : 600;
+        setInterval(createFloatingHeart, heartInterval);
+
+        // Add click effect to main heart
+        document.getElementById('heart').addEventListener('click', function() {
+            const scale = isProposalDay() ? 1.4 : 1.3;
+            this.style.transform = `scale(${scale})`;
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
