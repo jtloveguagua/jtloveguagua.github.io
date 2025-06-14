@@ -550,12 +550,13 @@
         // Time tracking from March 9th (3.9)
         function updateTimeTracker() {
             const startDate = new Date('2024-03-09');
+            const proposalDate = new Date('2025-06-14');
             const now = new Date();
             const timeDiff = now - startDate;
 
             const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
-            document.getElementById('timeDisplay').innerHTML = `${now.toDateString()} days`;
+            document.getElementById('timeDisplay').innerHTML = `${proposalDate.toDateString()} days`;
         }
 
         // Update proposal message based on date
