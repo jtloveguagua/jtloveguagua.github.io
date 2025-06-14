@@ -505,7 +505,7 @@
         function isProposalDay() {
             // Uncomment the lines below and comment out "return true;" for actual use
             const today = new Date();
-            const proposalDate = new Date(2025,6,14,16,0,0,0);
+            const proposalDate = new Date(2025,5,14,16,0,0,0);
             return today.toDateString() === proposalDate.toDateString();
 
             // PREVIEW MODE: Shows what June 14th will look like
@@ -550,19 +550,18 @@
         // Time tracking from March 9th (3.9)
         function updateTimeTracker() {
             const startDate = new Date('2024-03-09');
-            const proposalDate = new Date(2025,6,14,16,0,0,0);
             const now = new Date();
             const timeDiff = now - startDate;
 
             const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
-            document.getElementById('timeDisplay').innerHTML = `${proposalDate.toDateString()} days`;
+            document.getElementById('timeDisplay').innerHTML = `${days} days`;
         }
 
         // Update proposal message based on date
         function updateProposalMessage() {
             if (isProposalDay()) {
-                document.getElementById('proposalTitle').textContent = "Will You Marry Me?";
+                document.getElementById('proposalTitle').textContent = "Will You Be My Princess?";
                 document.getElementById('proposalText').textContent = "Let's start our forever together ❤️";
             } else {
                 // Show random love quote
