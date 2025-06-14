@@ -504,12 +504,12 @@
         // Check if it's proposal day - TEMPORARILY SET TO TRUE FOR PREVIEW
         function isProposalDay() {
             // Uncomment the lines below and comment out "return true;" for actual use
-            // const today = new Date();
-            // const proposalDate = new Date('2025-06-14');
-            // return today.toDateString() === proposalDate.toDateString();
+            const today = new Date();
+            const proposalDate = new Date(2025,06,14,16,0,0,0);
+            return today.toDateString() === proposalDate.toDateString();
 
             // PREVIEW MODE: Shows what June 14th will look like
-            return true;
+            // return true;
         }
 
         // Apply proposal day styling
@@ -550,7 +550,7 @@
         // Time tracking from March 9th (3.9)
         function updateTimeTracker() {
             const startDate = new Date('2024-03-09');
-            const proposalDate = new Date('2025-06-14');
+            const proposalDate = new Date(2025,06,14,16,0,0,0);
             const now = new Date();
             const timeDiff = now - startDate;
 
