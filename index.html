@@ -175,8 +175,8 @@
             animation: float 8s infinite linear;
         }
 
-        /* Special proposal day floating hearts - more intense */
-        .proposal-day .floating-heart {
+        /* Special wedding day floating hearts - more intense */
+        .wedding-day .floating-heart {
             color: rgba(239, 68, 68, 0.4);
             font-size: 32px;
             animation-duration: 6s;
@@ -256,10 +256,10 @@
             transition: all 0.3s ease;
         }
 
-        /* Special styling for proposal day heart */
-        .proposal-day .heart {
+        /* Special styling for wedding day heart */
+        .wedding-day .heart {
             font-size: 8rem;
-            animation: proposalHeartbeat 1.5s ease-in-out infinite;
+            animation: weddingHeartbeat 1.5s ease-in-out infinite;
             filter: drop-shadow(0 8px 25px rgba(239, 68, 68, 0.6));
             text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
         }
@@ -269,7 +269,7 @@
             filter: drop-shadow(0 4px 16px rgba(239, 68, 68, 0.4));
         }
 
-        .proposal-day .heart:hover {
+        .wedding-day .heart:hover {
             transform: scale(1.1);
             filter: drop-shadow(0 10px 30px rgba(239, 68, 68, 0.8));
         }
@@ -279,14 +279,14 @@
             50% { transform: scale(1.03); }
         }
 
-        @keyframes proposalHeartbeat {
+        @keyframes weddingHeartbeat {
             0%, 100% { transform: scale(1); }
             25% { transform: scale(1.05); }
             50% { transform: scale(1.08); }
             75% { transform: scale(1.05); }
         }
 
-        .proposal-message {
+        .wedding-message {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
@@ -299,20 +299,20 @@
             position: relative;
         }
 
-        /* Special proposal day message styling */
-        .proposal-day .proposal-message {
+        /* Special wedding day message styling */
+        .wedding-day .wedding-message {
             background: rgba(255, 240, 245, 0.98);
             border: 2px solid rgba(239, 68, 68, 0.2);
             box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15);
-            animation: proposalGlow 2s ease-in-out infinite alternate;
+            animation: weddingGlow 2s ease-in-out infinite alternate;
         }
 
-        @keyframes proposalGlow {
+        @keyframes weddingGlow {
             0% { box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15); }
             100% { box-shadow: 0 16px 50px rgba(239, 68, 68, 0.25); }
         }
 
-        .proposal-message h2 {
+        .wedding-message h2 {
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 16px;
@@ -320,20 +320,20 @@
             letter-spacing: -0.01em;
         }
 
-        .proposal-day .proposal-message h2 {
+        .wedding-day .wedding-message h2 {
             font-size: 2.5rem;
             color: #dc2626;
             text-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
         }
 
-        .proposal-message p {
+        .wedding-message p {
             font-size: 1.1rem;
             line-height: 1.6;
             color: #64748b;
             font-weight: 400;
         }
 
-        .proposal-day .proposal-message p {
+        .wedding-day .wedding-message p {
             font-size: 1.3rem;
             color: #7c2d12;
             font-weight: 500;
@@ -348,8 +348,8 @@
             animation: sparkle 2s ease-in-out infinite;
         }
 
-        /* More sparkles on proposal day */
-        .proposal-day .sparkle {
+        /* More sparkles on wedding day */
+        .wedding-day .sparkle {
             animation-duration: 1.5s;
             background: radial-gradient(circle, #ef4444, #dc2626);
             width: 3px;
@@ -361,7 +361,7 @@
             50% { opacity: 0.6; transform: scale(1); }
         }
 
-        /* Heart shower effect for proposal day */
+        /* Heart shower effect for wedding day */
         .heart-shower {
             position: fixed;
             top: 0;
@@ -398,12 +398,12 @@
         @media (max-width: 768px) {
             .title { font-size: 2.5rem; }
             .heart { font-size: 4rem; }
-            .proposal-day .heart { font-size: 5rem; }
-            .proposal-message { padding: 30px 40px; margin: 30px 20px; }
-            .proposal-message h2 { font-size: 1.75rem; }
-            .proposal-day .proposal-message h2 { font-size: 2rem; }
-            .proposal-message p { font-size: 1rem; }
-            .proposal-day .proposal-message p { font-size: 1.1rem; }
+            .wedding-day .heart { font-size: 5rem; }
+            .wedding-message { padding: 30px 40px; margin: 30px 20px; }
+            .wedding-message h2 { font-size: 1.75rem; }
+            .wedding-day .wedding-message h2 { font-size: 2rem; }
+            .wedding-message p { font-size: 1rem; }
+            .wedding-day .wedding-message p { font-size: 1.1rem; }
             .time-tracker { padding: 20px 24px; margin: 20px; }
         }
     </style>
@@ -431,9 +431,9 @@
             <div class="heart" id="heart">❤️</div>
         </div>
 
-        <div class="proposal-message" id="proposalMessage">
-            <h2 id="proposalTitle">Loading...</h2>
-            <p id="proposalText">Our love story continues...</p>
+        <div class="wedding-message" id="weddingMessage">
+            <h2 id="weddingTitle">Loading...</h2>
+            <p id="weddingText">Our love story continues...</p>
         </div>
     </div>
 
@@ -441,8 +441,8 @@
         // Heart variations for different days
         const hearts = ['❤️', '💖', '💝', '💗', '💕', '💘', '🧡', '💛', '💚', '💙', '💜', '🤍', '🖤', '💯'];
 
-        // Special hearts for proposal day
-        const proposalHearts = ['💖', '💕', '💗', '💝', '❤️'];
+        // Special hearts for wedding day
+        const weddingHearts = ['💖', '💕', '💗', '💝', '❤️'];
 
         // Love phrases for random display (50+ quotes)
         const loveQuotes = [
@@ -501,21 +501,21 @@
             { title: "Love's Wonder", text: "I wonder how I lived before I met you" }
         ];
 
-        // Check if it's proposal day - TEMPORARILY SET TO TRUE FOR PREVIEW
-        function isProposalDay() {
+        // Check if it's wedding day - TEMPORARILY SET TO TRUE FOR PREVIEW
+        function isweddingDay() {
             // Uncomment the lines below and comment out "return true;" for actual use
             const today = new Date();
-            const proposalDate = new Date(2025,5,14,16,0,0,0);
-            return today.toDateString() === proposalDate.toDateString();
+            const weddingDate = new Date(2025,7,15,16,0,0,0);
+            return today.toDateString() === weddingDate.toDateString();
 
             // PREVIEW MODE: Shows what June 14th will look like
             // return true;
         }
 
-        // Apply proposal day styling
-        function applyProposalDayStyle() {
-            if (isProposalDay()) {
-                document.body.classList.add('proposal-day');
+        // Apply wedding day styling
+        function applyweddingDayStyle() {
+            if (isweddingDay()) {
+                document.body.classList.add('wedding-day');
                 // Create heart shower effect
                 createHeartShower();
                 // Increase floating hearts frequency
@@ -523,16 +523,16 @@
             }
         }
 
-        // Create heart shower for proposal day
+        // Create heart shower for wedding day
         function createHeartShower() {
-            if (!isProposalDay()) return;
+            if (!isweddingDay()) return;
 
             setInterval(() => {
                 for (let i = 0; i < 3; i++) {
                     setTimeout(() => {
                         const heart = document.createElement('div');
                         heart.className = 'shower-heart';
-                        heart.textContent = proposalHearts[Math.floor(Math.random() * proposalHearts.length)];
+                        heart.textContent = weddingHearts[Math.floor(Math.random() * weddingHearts.length)];
                         heart.style.left = Math.random() * 100 + '%';
                         heart.style.animationDelay = Math.random() * 2 + 's';
                         heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
@@ -558,24 +558,24 @@
             document.getElementById('timeDisplay').innerHTML = `${days} days`;
         }
 
-        // Update proposal message based on date
-        function updateProposalMessage() {
-            if (isProposalDay()) {
-                document.getElementById('proposalTitle').textContent = "Will You Be My Princess?";
-                document.getElementById('proposalText').textContent = "Let's start our forever together ❤️";
+        // Update wedding message based on date
+        function updateweddingMessage() {
+            if (isweddingDay()) {
+                document.getElementById('weddingTitle').textContent = "💍 We Got Married 💍";
+                document.getElementById('weddingText').textContent = "❤️ Forever Together ❤️";
             } else {
                 // Show random love quote
                 const randomIndex = Math.floor(Math.random() * loveQuotes.length);
                 const quote = loveQuotes[randomIndex];
-                document.getElementById('proposalTitle').textContent = quote.title;
-                document.getElementById('proposalText').textContent = quote.text;
+                document.getElementById('weddingTitle').textContent = quote.title;
+                document.getElementById('weddingText').textContent = quote.text;
             }
         }
 
-        // Change heart based on day - FIXED for proposal day
+        // Change heart based on day - FIXED for wedding day
         function setDailyHeart() {
-            if (isProposalDay()) {
-                // FIXED: Always show the classic red heart on proposal day
+            if (isweddingDay()) {
+                // FIXED: Always show the classic red heart on wedding day
                 document.getElementById('heart').textContent = '❤️';
             } else {
                 // Regular daily rotation for other days
@@ -591,8 +591,8 @@
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
 
-            if (isProposalDay()) {
-                heart.textContent = proposalHearts[Math.floor(Math.random() * proposalHearts.length)];
+            if (isweddingDay()) {
+                heart.textContent = weddingHearts[Math.floor(Math.random() * weddingHearts.length)];
             } else {
                 heart.textContent = '💕';
             }
@@ -609,7 +609,7 @@
 
         // Create sparkles with more variety
         function createSparkles() {
-            const sparkleCount = isProposalDay() ? 50 : 30;
+            const sparkleCount = isweddingDay() ? 50 : 30;
 
             for (let i = 0; i < sparkleCount; i++) {
                 const sparkle = document.createElement('div');
@@ -625,23 +625,23 @@
         // Initialize everything
         updateTimeTracker();
         setDailyHeart();
-        updateProposalMessage();
-        applyProposalDayStyle();
+        updateweddingMessage();
+        applyweddingDayStyle();
         createSparkles();
 
         // Update time every minute
         setInterval(updateTimeTracker, 60000);
 
-        // Update proposal message every hour (in case date changes)
-        setInterval(updateProposalMessage, 3600000);
+        // Update wedding message every hour (in case date changes)
+        setInterval(updateweddingMessage, 3600000);
 
         // Create floating hearts periodically
-        const heartInterval = isProposalDay() ? 300 : 600;
+        const heartInterval = isweddingDay() ? 300 : 600;
         setInterval(createFloatingHeart, heartInterval);
 
         // Add click effect to main heart
         document.getElementById('heart').addEventListener('click', function() {
-            const scale = isProposalDay() ? 1.4 : 1.3;
+            const scale = isweddingDay() ? 1.4 : 1.3;
             this.style.transform = `scale(${scale})`;
             setTimeout(() => {
                 this.style.transform = 'scale(1)';
