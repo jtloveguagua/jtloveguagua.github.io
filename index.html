@@ -262,6 +262,13 @@
             justify-content: space-between;
             padding: 16px 18px 12px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px 24px 0 0;
         }
 
         .cal-nav-btn {
@@ -990,14 +997,19 @@
 
     async function loadManifest() {
         try {
-            const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${MANIFEST_PATH}?t=${Date.now()}`);
+            // Use GitHub API instead of raw CDN — avoids 5-min CDN cache
+            const r = await fetch(
+                `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,
+                { headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' } }
+            );
             if (r.ok) {
-                const raw = await r.json();
-                manifest = repairManifest(raw);
+                const d = await r.json();
+                const decoded = ghBase64Decode(d.content);
+                manifest = Array.isArray(decoded) ? repairManifest(decoded) : [];
             } else {
                 manifest = [];
             }
-        } catch(e) { manifest=[]; }
+        } catch(e) { manifest = []; }
         renderCalendar();
         if (selDate) renderDayPhotos(selDate);
     }
@@ -1146,13 +1158,27 @@
         return res.json();
     }
 
-    // Safely decode GitHub's base64 (they insert \n every 60 chars)
+    // Encode JSON string to base64, handling full Unicode (Chinese etc.)
+    function encodeToBase64(str) {
+        const bytes = new TextEncoder().encode(str);
+        let binary = '';
+        bytes.forEach(b => binary += String.fromCharCode(b));
+        return btoa(binary);
+    }
+
+    // Decode GitHub's base64 back to string, handling full Unicode
+    function decodeFromBase64(str) {
+        const clean = str.replace(/\s/g, '');
+        const binary = atob(clean);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return new TextDecoder('utf-8').decode(bytes);
+    }
+
+    // Safely decode GitHub's base64 manifest content
     function ghBase64Decode(str) {
-        // Remove all whitespace GitHub inserts
-        const clean = str.replace(/\s/g,'');
         try {
-            // Use decodeURIComponent + escape trick to handle unicode
-            return JSON.parse(decodeURIComponent(escape(atob(clean))));
+            return JSON.parse(decodeFromBase64(str));
         } catch(e) {
             console.error('Failed to decode manifest:', e);
             return null;
@@ -1173,7 +1199,7 @@
                 sha=d.sha;
                 const decoded = ghBase64Decode(d.content);
                 if(Array.isArray(decoded)){
-                    entries = repairManifest(decoded);
+                    entries = decoded;
                 } else {
                     console.warn('Manifest decoded but was not an array — starting fresh');
                     entries=[];
@@ -1191,9 +1217,9 @@
             entries.unshift(entry);
         }
 
-        // Step 3: encode back — must handle unicode (Chinese captions etc.)
+        // Step 3: encode back using proper UTF-8 encoder
         const jsonStr = JSON.stringify(entries, null, 2);
-        const content = btoa(unescape(encodeURIComponent(jsonStr)));
+        const content = encodeToBase64(jsonStr);
 
         const body={message:'Update photo manifest',content,branch:GITHUB_BRANCH};
         if(sha) body.sha=sha;
