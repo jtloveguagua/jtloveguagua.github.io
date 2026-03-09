@@ -1,8 +1,17 @@
 [
   {
+    "date": "2026-03-08",
+    "user": "jt",
+    "caption": "奔跑小卡",
+    "photos": [
+      "photos/2026-03-08/jt/photo_1.jpeg"
+    ],
+    "time": "23:33"
+  },
+  {
     "date": "2026-02-28",
     "user": "jt",
-    "caption": "小赛车gogo",
+    "caption": "å°èµè½¦gogo",
     "photos": [
       "photos/2026-02-28/jt/photo_1.jpeg"
     ],
@@ -11,7 +20,7 @@
   {
     "date": "2026-02-28",
     "user": "yx",
-    "caption": "ä¸¤ä¸ªæ°´ç®¡å·¥",
+    "caption": "Ã¤Â¸Â¤Ã¤Â¸ÂªÃ¦Â°Â´Ã§Â®Â¡Ã¥Â·Â¥",
     "photos": [
       "photos/2026-02-28/yx/photo_1.jpeg"
     ],
