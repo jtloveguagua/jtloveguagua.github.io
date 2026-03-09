@@ -86,11 +86,10 @@
             gap: 0;
         }
 
-        /* Floating 💗 accent top-left (like the reference) */
-        .hero-heart-accent {
+        /* Floating 💗 accent — sits on top-left corner of each card */
+        .card-heart-accent {
             position: absolute;
-            top: max(48px, env(safe-area-inset-top));
-            left: 20px;
+            top: -14px; left: 16px;
             font-size: 28px;
             filter: drop-shadow(0 2px 6px rgba(236,72,153,0.4));
             animation: accentPulse 3s ease-in-out infinite;
@@ -105,15 +104,16 @@
         .counter-card {
             width: 100%;
             max-width: 500px;
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(24px) saturate(1.4);
-            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            background: rgba(255,255,255,0.30);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
             border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.7);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.09), 0 1px 0 rgba(255,255,255,0.8) inset;
+            border: 1px solid rgba(255,255,255,0.45);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
             padding: 28px 28px 24px;
             text-align: center;
             margin-top: 56px;
+            position: relative;
         }
 
         .counter-label {
@@ -157,12 +157,12 @@
         .quote-card {
             width: 100%;
             max-width: 500px;
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(24px) saturate(1.4);
-            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            background: rgba(255,255,255,0.30);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
             border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.7);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.09), 0 1px 0 rgba(255,255,255,0.8) inset;
+            border: 1px solid rgba(255,255,255,0.45);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
             padding: 26px 28px;
             text-align: center;
             margin-top: 16px;
@@ -171,8 +171,8 @@
 
         .quote-card-accent {
             position: absolute;
-            top: -14px; left: 20px;
-            font-size: 26px;
+            top: -14px; left: 16px;
+            font-size: 28px;
             filter: drop-shadow(0 2px 6px rgba(236,72,153,0.35));
             animation: accentPulse 3.5s ease-in-out infinite;
         }
@@ -573,10 +573,9 @@
          PAGE 1: HERO
     ══════════════════════════════ -->
     <section class="page-hero" id="pageHero">
-        <div class="hero-heart-accent">💗</div>
-
         <!-- Day counter card -->
         <div class="counter-card">
+            <div class="card-heart-accent">💗</div>
             <div class="counter-label">Our Love Story Started</div>
             <div class="counter-number" id="timeDisplay">…</div>
             <div class="counter-since">since 03.09.2024</div>
