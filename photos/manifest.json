@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-01-01",
+    "user": "yx",
+    "caption": "元旦快乐！",
+    "photos": [
+      "photos/2026-01-01/yx/photo_1.jpeg"
+    ],
+    "time": "00:26"
+  },
+  {
     "date": "2026-01-04",
     "user": "yx",
     "caption": "爸爸和儿子",
