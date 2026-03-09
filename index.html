@@ -105,8 +105,8 @@
             width: 100%;
             max-width: 500px;
             background: rgba(255,255,255,0.10);
-            backdrop-filter: blur(10px) saturate(1.6);
-            -webkit-backdrop-filter: blur(10px) saturate(1.6);
+            backdrop-filter: blur(5px) saturate(1.6);
+            -webkit-backdrop-filter: blur(5px) saturate(1.6);
             border-radius: 22px;
             border: 1px solid rgba(255,255,255,0.45);
             box-shadow: 0 8px 32px rgba(0,0,0,0.08);
@@ -158,8 +158,8 @@
             width: 100%;
             max-width: 500px;
             background: rgba(255,255,255,0.10);
-            backdrop-filter: blur(10px) saturate(1.6);
-            -webkit-backdrop-filter: blur(10px) saturate(1.6);
+            backdrop-filter: blur(5px) saturate(1.6);
+            -webkit-backdrop-filter: blur(5px) saturate(1.6);
             border-radius: 22px;
             border: 1px solid rgba(255,255,255,0.45);
             box-shadow: 0 8px 32px rgba(0,0,0,0.08);
@@ -1028,10 +1028,36 @@
     // MANIFEST
     // ═══════════════════════════════════════
 
+    // Try to fix double-encoded UTF-8 mojibake (e.g. "ÃÂÃÂ¥" → correct Chinese)
+    function tryFixMojibake(str) {
+        if (!str) return str;
+        // If string contains no mojibake pattern, return as-is
+        if (!/Ã/.test(str)) return str;
+        try {
+            // Reverse of double-encode: encode each char code back to bytes, then decode as UTF-8
+            const bytes = Array.from(str).map(c => c.charCodeAt(0));
+            return decodeURIComponent(bytes.map(b => '%' + b.toString(16).padStart(2,'0')).join(''));
+        } catch(e) {
+            return str; // can't fix, return original
+        }
+    }
+
+    function repairManifest(entries) {
+        return entries.map(e => ({
+            ...e,
+            caption: tryFixMojibake(e.caption)
+        }));
+    }
+
     async function loadManifest() {
         try {
             const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${MANIFEST_PATH}?t=${Date.now()}`);
-            manifest = r.ok ? await r.json() : [];
+            if (r.ok) {
+                const raw = await r.json();
+                manifest = repairManifest(raw);
+            } else {
+                manifest = [];
+            }
         } catch(e) { manifest=[]; }
         renderCalendar();
         if (selDate) renderDayPhotos(selDate);
@@ -1153,8 +1179,8 @@
                 renderCalendar(); renderDayPhotos(uploadDate);
             },700);
         } catch(err){
-            console.error(err);
-            lbl.textContent='❌ Upload failed. Check your connection.';
+            console.error('Upload failed:', err);
+            lbl.textContent=`❌ ${err.message||'Upload failed. Check your connection.'}`;
             btn.disabled=false;
         }
     }
@@ -1165,22 +1191,86 @@
 
     async function ghPut(path,b64,msg){
         let sha=null;
-        try{const c=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});if(c.ok)sha=(await c.json()).sha;}catch(e){}
-        const body={message:msg,content:b64,branch:GITHUB_BRANCH};if(sha)body.sha=sha;
-        const res=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-        if(!res.ok){const e=await res.json();throw new Error(e.message);}
+        try{
+            const c=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+                {headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
+            if(c.ok) sha=(await c.json()).sha;
+        }catch(e){}
+        const body={message:msg,content:b64,branch:GITHUB_BRANCH};
+        if(sha) body.sha=sha;
+        const res=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,{
+            method:'PUT',
+            headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+            body:JSON.stringify(body)
+        });
+        if(!res.ok){const e=await res.json();throw new Error(`GitHub error on ${path}: ${e.message}`);}
         return res.json();
     }
 
+    // Safely decode GitHub's base64 (they insert \n every 60 chars)
+    function ghBase64Decode(str) {
+        // Remove all whitespace GitHub inserts
+        const clean = str.replace(/\s/g,'');
+        try {
+            // Use decodeURIComponent + escape trick to handle unicode
+            return JSON.parse(decodeURIComponent(escape(atob(clean))));
+        } catch(e) {
+            console.error('Failed to decode manifest:', e);
+            return null;
+        }
+    }
+
     async function updateManifest(entry){
-        let entries=[],sha=null;
-        try{const r=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});if(r.ok){const d=await r.json();sha=d.sha;entries=JSON.parse(atob(d.content.replace(/\n/g,'')));}}catch(e){}
-        const idx=entries.findIndex(e=>e.date===entry.date&&e.user===entry.user);
-        if(idx>=0)entries[idx]=entry; else entries.unshift(entry);
-        const content=btoa(unescape(encodeURIComponent(JSON.stringify(entries,null,2))));
-        const body={message:'Update photo manifest',content,branch:GITHUB_BRANCH};if(sha)body.sha=sha;
-        const res=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-        if(!res.ok)throw new Error('Failed to update manifest');
+        let entries=[], sha=null;
+
+        // Step 1: fetch current manifest
+        try{
+            const r=await fetch(
+                `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,
+                {headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}}
+            );
+            if(r.ok){
+                const d=await r.json();
+                sha=d.sha;
+                const decoded = ghBase64Decode(d.content);
+                if(Array.isArray(decoded)){
+                    entries = repairManifest(decoded);
+                } else {
+                    console.warn('Manifest decoded but was not an array — starting fresh');
+                    entries=[];
+                }
+            }
+        }catch(e){
+            console.warn('Could not fetch manifest, will create new:', e);
+        }
+
+        // Step 2: upsert — replace same date+user, or prepend
+        const idx=entries.findIndex(e=>e.date===entry.date && e.user===entry.user);
+        if(idx>=0){
+            entries[idx]=entry;
+        } else {
+            entries.unshift(entry);
+        }
+
+        // Step 3: encode back — must handle unicode (Chinese captions etc.)
+        const jsonStr = JSON.stringify(entries, null, 2);
+        const content = btoa(unescape(encodeURIComponent(jsonStr)));
+
+        const body={message:'Update photo manifest',content,branch:GITHUB_BRANCH};
+        if(sha) body.sha=sha;
+
+        const res=await fetch(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,
+            {
+                method:'PUT',
+                headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+                body:JSON.stringify(body)
+            }
+        );
+        if(!res.ok){
+            const e=await res.json();
+            throw new Error(`Failed to update manifest: ${e.message}`);
+        }
     }
 
     // ═══════════════════════════════════════
