@@ -2,1454 +2,1217 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>猪猪's Love</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.02) 0%, transparent 50%),
-                linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        html, body {
+            height: 100%;
             font-family: 'Inter', sans-serif;
             color: #1e293b;
             overflow-x: hidden;
-            position: relative;
         }
 
-        .background-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(248, 250, 252, 0.9);
-            backdrop-filter: blur(1px);
-            pointer-events: none;
-            z-index: 0;
-            display: none;
-        }
-
+        /* ── Full-bleed fixed background ── */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
-            background-image: url('image.jpeg');
+            inset: 0;
+            z-index: 0;
+            background-image: url('image.png');
             background-size: cover;
-            background-position: center;
+            background-position: center center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            filter: brightness(1.2) contrast(0.8) saturate(0.7) blur(0.5px) opacity(0.3);
+            filter: brightness(1.35) contrast(0.75) saturate(0.5) opacity(0.4);
         }
 
+        /* Soft white overlay to lift the cards */
         body::after {
             content: '';
             position: fixed;
-            top: 0; left: 0;
-            width: 120%; height: 120%;
-            background:
-                radial-gradient(circle at 25% 25%, rgba(239, 68, 68, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.06) 0%, transparent 35%),
-                radial-gradient(circle at 75% 25%, rgba(236, 72, 153, 0.05) 0%, transparent 30%),
-                radial-gradient(circle at 25% 75%, rgba(59, 130, 246, 0.04) 0%, transparent 25%),
-                radial-gradient(circle at 50% 10%, rgba(34, 197, 94, 0.03) 0%, transparent 20%),
-                radial-gradient(circle at 90% 60%, rgba(251, 146, 60, 0.04) 0%, transparent 25%);
-            animation: backgroundFloat 25s ease-in-out infinite;
-            pointer-events: none;
+            inset: 0;
             z-index: 0;
-        }
-
-        @keyframes backgroundFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            20% { transform: translate(-3%, 2%) rotate(1deg) scale(1.02); }
-            40% { transform: translate(2%, -3%) rotate(-0.5deg) scale(0.98); }
-            60% { transform: translate(-1%, 3%) rotate(0.8deg) scale(1.01); }
-            80% { transform: translate(3%, -1%) rotate(-0.3deg) scale(0.99); }
-        }
-
-        .floating-orbs {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.18) 0%,
+                rgba(255,255,255,0.05) 40%,
+                rgba(255,255,255,0.12) 100%
+            );
             pointer-events: none;
-            z-index: 0;
         }
 
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(239, 68, 68, 0.1));
-            animation: orbFloat 15s infinite ease-in-out;
-            backdrop-filter: blur(1px);
+        /* Floating heart particles */
+        .floating-hearts { position:fixed; inset:0; pointer-events:none; z-index:1; }
+        .floating-heart { position:absolute; font-size:22px; color:rgba(239,68,68,0.18); animation:floatUp 9s infinite linear; }
+        .wedding-day    .floating-heart { color:rgba(239,68,68,0.45); font-size:30px; animation-duration:6s; }
+        .anniversary-day .floating-heart { color:rgba(255,105,180,0.42); font-size:26px; animation-duration:7s; }
+        @keyframes floatUp {
+            0%   { transform:translateY(100vh) rotate(0deg); opacity:0; }
+            8%   { opacity:1; }
+            92%  { opacity:1; }
+            100% { transform:translateY(-120px) rotate(360deg); opacity:0; }
         }
 
-        .orb:nth-child(1) { width: 60px; height: 60px; top: 20%; left: 10%; animation-delay: 0s; }
-        .orb:nth-child(2) { width: 40px; height: 40px; top: 60%; right: 15%; animation-delay: -5s; }
-        .orb:nth-child(3) { width: 80px; height: 80px; bottom: 30%; left: 20%; animation-delay: -10s; }
-        .orb:nth-child(4) { width: 35px; height: 35px; top: 40%; right: 30%; animation-delay: -3s; }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
-            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
-            50% { transform: translateY(-10px) translateX(-15px) scale(0.9); opacity: 0.4; }
-            75% { transform: translateY(15px) translateX(5px) scale(1.05); opacity: 0.6; }
+        /* Heart shower (wedding/anniversary) */
+        .heart-shower { position:fixed; inset:0; pointer-events:none; z-index:2; }
+        .shower-heart { position:absolute; font-size:20px; animation:showerDown 4s linear infinite; }
+        @keyframes showerDown {
+            0%   { transform:translateY(-80px) rotate(0deg); opacity:0; }
+            10%  { opacity:1; } 90% { opacity:1; }
+            100% { transform:translateY(100vh) rotate(360deg); opacity:0; }
         }
 
-        .container {
+        /* Sparkles */
+        .sparkle { position:absolute; width:2px; height:2px; background:#ef4444; border-radius:50%; animation:sparkle 2.5s ease-in-out infinite; pointer-events:none; }
+        .wedding-day .sparkle   { width:3px; height:3px; animation-duration:1.5s; }
+        .anniversary-day .sparkle { background:radial-gradient(circle,#ff69b4,#d63384); width:3px; height:3px; animation-duration:1.8s; }
+        @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0);} 50%{opacity:0.7;transform:scale(1);} }
+
+        /* ────────────────────────────────
+           PAGE 1 — Hero / Above the fold
+        ──────────────────────────────── */
+        .page-hero {
+            position: relative;
+            z-index: 2;
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
+            justify-content: flex-start;
+            padding: max(48px, env(safe-area-inset-top)) 24px 32px;
+            gap: 0;
         }
 
-        .floating-hearts {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-heart {
+        /* Floating 💗 accent top-left (like the reference) */
+        .hero-heart-accent {
             position: absolute;
-            font-size: 24px;
-            color: rgba(239, 68, 68, 0.15);
-            animation: float 8s infinite linear;
+            top: max(48px, env(safe-area-inset-top));
+            left: 20px;
+            font-size: 28px;
+            filter: drop-shadow(0 2px 6px rgba(236,72,153,0.4));
+            animation: accentPulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes accentPulse {
+            0%,100% { transform:scale(1) rotate(-10deg); }
+            50%     { transform:scale(1.15) rotate(5deg); }
         }
 
-        .wedding-day .floating-heart {
-            color: rgba(239, 68, 68, 0.4);
-            font-size: 32px;
-            animation-duration: 6s;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-        }
-
-        .time-tracker {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 24px 32px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+        /* Counter card */
+        .counter-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.09), 0 1px 0 rgba(255,255,255,0.8) inset;
+            padding: 28px 28px 24px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            z-index: 2;
-            position: relative;
+            margin-top: 56px;
         }
 
-        .time-tracker h3 {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .time-display {
-            font-size: 24px;
+        .counter-label {
+            font-size: 11px;
             font-weight: 700;
-            color: #1e293b;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 10px;
         }
 
-        .title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            font-weight: 600;
-            margin-bottom: 60px;
-            text-align: center;
-            color: #1e293b;
-            letter-spacing: 0.02em;
-            z-index: 2;
-            position: relative;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .counter-number {
+            font-size: clamp(3.2rem, 16vw, 5rem);
+            font-weight: 800;
+            color: #f43f8e;
+            line-height: 1;
+            letter-spacing: -2px;
+            /* Pink glow */
+            text-shadow: 0 0 40px rgba(244,63,142,0.25);
         }
+        .counter-number span { font-size: 0.42em; font-weight: 700; letter-spacing: 0; vertical-align: middle; margin-left: 4px; }
 
-        .heart-container {
-            flex: 1;
+        .counter-since {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2;
-            position: relative;
+            gap: 10px;
+        }
+        .counter-since::before, .counter-since::after {
+            content: '';
+            display: block;
+            width: 32px; height: 1px;
+            background: #cbd5e1;
         }
 
-        .heart {
-            font-size: 6rem;
-            animation: heartbeat 2s ease-in-out infinite;
-            filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.3));
-            transition: all 0.3s ease;
-        }
-
-        .wedding-day .heart {
-            font-size: 8rem;
-            animation: weddingHeartbeat 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 8px 25px rgba(239, 68, 68, 0.6));
-        }
-
-        .heart:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 4px 16px rgba(239, 68, 68, 0.4));
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-
-        @keyframes weddingHeartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.05); }
-            50% { transform: scale(1.08); }
-            75% { transform: scale(1.05); }
-        }
-
-        .wedding-message {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px 60px;
-            margin-top: 60px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            z-index: 2;
-            position: relative;
-        }
-
-        .wedding-day .wedding-message {
-            background: rgba(255, 240, 245, 0.98);
-            border: 2px solid rgba(239, 68, 68, 0.2);
-            box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15);
-            animation: weddingGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes weddingGlow {
-            0% { box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15); }
-            100% { box-shadow: 0 16px 50px rgba(239, 68, 68, 0.25); }
-        }
-
-        .wedding-message h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1e293b;
-            letter-spacing: -0.01em;
-        }
-
-        .wedding-day .wedding-message h2 { font-size: 2.5rem; color: #dc2626; }
-
-        .wedding-message p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #64748b;
-        }
-
-        .wedding-day .wedding-message p { font-size: 1.3rem; color: #7c2d12; font-weight: 500; }
-
-        .sparkle {
-            position: absolute;
-            width: 2px; height: 2px;
-            background: #ef4444;
-            border-radius: 50%;
-            animation: sparkle 2s ease-in-out infinite;
-        }
-
-        .wedding-day .sparkle { animation-duration: 1.5s; width: 3px; height: 3px; }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 0.6; transform: scale(1); }
-        }
-
-        .heart-shower {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 3;
-        }
-
-        .shower-heart {
-            position: absolute;
-            font-size: 20px;
-            animation: shower 4s linear infinite;
-        }
-
-        @keyframes shower {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* ===================== GALLERY SECTION ===================== */
-
-        .gallery-section {
+        /* Quote card */
+        .quote-card {
             width: 100%;
-            max-width: 680px;
-            margin-top: 60px;
-            padding-bottom: 80px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .gallery-section-header {
+            max-width: 500px;
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.09), 0 1px 0 rgba(255,255,255,0.8) inset;
+            padding: 26px 28px;
             text-align: center;
-            margin-bottom: 32px;
+            margin-top: 16px;
+            position: relative;
         }
 
-        .gallery-section-header h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.4rem;
-            font-weight: 600;
+        .quote-card-accent {
+            position: absolute;
+            top: -14px; left: 20px;
+            font-size: 26px;
+            filter: drop-shadow(0 2px 6px rgba(236,72,153,0.35));
+            animation: accentPulse 3.5s ease-in-out infinite;
+        }
+
+        .quote-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .wedding-day   .quote-label { color: #e57373; }
+        .anniversary-day .quote-label { color: #d63384; }
+
+        .quote-title {
+            font-size: 1.15rem;
+            font-weight: 700;
             color: #1e293b;
             margin-bottom: 6px;
         }
+        .wedding-day   .quote-title { color: #c62828; font-size: 1.4rem; }
+        .anniversary-day .quote-title { color: #ad1457; font-size: 1.3rem; }
 
-        .gallery-section-header p {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
-        }
-
-        .gallery-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .gallery-divider::before,
-        .gallery-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(239, 68, 68, 0.2), transparent);
-        }
-
-        .gallery-divider span {
-            font-size: 18px;
-        }
-
-        /* Feed cards */
-        .gallery-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .gallery-card {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
-            overflow: hidden;
-            animation: cardAppear 0.5s ease forwards;
-        }
-
-        @keyframes cardAppear {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .gallery-card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 18px 12px;
-        }
-
-        .card-date-badge {
-            background: linear-gradient(135deg, #fce4ec, #ffd6e0);
-            border-radius: 10px;
-            padding: 6px 10px;
-            text-align: center;
-            min-width: 52px;
-            flex-shrink: 0;
-        }
-
-        .card-date-day {
-            display: block;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #c2185b;
-            line-height: 1;
-        }
-
-        .card-date-month {
-            display: block;
-            font-size: 0.65rem;
-            color: #e91e63;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-
-        .card-meta {
-            flex: 1;
-        }
-
-        .card-caption {
+        .quote-text {
             font-size: 0.95rem;
-            font-weight: 500;
-            color: #1e293b;
-            margin-bottom: 3px;
-            line-height: 1.4;
-        }
-
-        .card-timestamp {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        .card-photos {
-            display: grid;
-            gap: 3px;
-            padding: 0 3px 3px;
-        }
-
-        .card-photos.count-1 { grid-template-columns: 1fr; }
-        .card-photos.count-2 { grid-template-columns: 1fr 1fr; }
-        .card-photos.count-3 { grid-template-columns: 1fr 1fr 1fr; }
-        .card-photos.count-4 { grid-template-columns: 1fr 1fr; }
-        .card-photos.count-5 { grid-template-columns: 1fr 1fr 1fr; }
-        .card-photos.count-many { grid-template-columns: 1fr 1fr 1fr; }
-
-        .card-photo {
-            aspect-ratio: 1;
-            overflow: hidden;
-            border-radius: 8px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .card-photos.count-1 .card-photo {
-            aspect-ratio: 16/9;
-            border-radius: 12px;
-        }
-
-        .card-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .card-photo:hover img { transform: scale(1.05); }
-
-        .card-photo-more {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 8px;
-        }
-
-        /* Gallery empty state */
-        .gallery-empty {
-            text-align: center;
-            padding: 60px 20px;
-            color: #94a3b8;
-        }
-
-        .gallery-empty .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .gallery-empty p {
-            font-size: 0.9rem;
+            color: #64748b;
             line-height: 1.6;
         }
+        .wedding-day   .quote-text { color: #7c2d12; font-weight: 500; font-size: 1.05rem; }
+        .anniversary-day .quote-text { color: #9c2777; font-weight: 500; }
 
-        /* Gallery loading */
-        .gallery-loading {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
+        /* Wedding/anniversary card glow */
+        .wedding-day     .quote-card { background:rgba(255,240,245,0.92); border-color:rgba(239,68,68,0.2); animation:weddingGlow 2s ease-in-out infinite alternate; }
+        .anniversary-day .quote-card { background:rgba(255,240,250,0.92); border-color:rgba(255,105,180,0.25); animation:anniversaryGlow 2.5s ease-in-out infinite alternate; }
+        @keyframes weddingGlow { 0%{box-shadow:0 8px 32px rgba(239,68,68,0.15);} 100%{box-shadow:0 16px 48px rgba(239,68,68,0.28);} }
+        @keyframes anniversaryGlow { 0%{box-shadow:0 8px 32px rgba(255,105,180,0.15);} 100%{box-shadow:0 18px 52px rgba(255,105,180,0.32);} }
 
-        /* ===================== LOCK BUTTON ===================== */
-
-        .upload-trigger {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 52px;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(239, 68, 68, 0.15);
-            border-radius: 50%;
+        /* Scroll hint at bottom of hero */
+        .scroll-hint {
+            margin-top: auto;
+            padding-top: 32px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
             cursor: pointer;
-            font-size: 20px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            transition: all 0.2s ease;
             user-select: none;
         }
 
-        .upload-trigger:hover {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.15);
-            transform: scale(1.05);
+        .scroll-hint-label {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: rgba(30,41,59,0.75);
+            text-shadow: 0 1px 4px rgba(255,255,255,0.5);
         }
 
-        /* ===================== MODAL OVERLAY ===================== */
+        .scroll-hint-arrow {
+            width: 28px; height: 28px;
+            border-right: 2.5px solid rgba(30,41,59,0.5);
+            border-bottom: 2.5px solid rgba(30,41,59,0.5);
+            transform: rotate(45deg);
+            animation: bounceDown 1.8s ease-in-out infinite;
+            margin-top: -6px;
+        }
+        @keyframes bounceDown {
+            0%,100% { transform:rotate(45deg) translateY(0); opacity:0.5; }
+            50%      { transform:rotate(45deg) translateY(6px); opacity:1; }
+        }
 
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(6px);
-            z-index: 200;
+        /* ────────────────────────────────
+           PAGE 2 — Calendar / Memories
+        ──────────────────────────────── */
+        .page-memories {
+            position: relative;
+            z-index: 2;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 16px max(40px, env(safe-area-inset-bottom));
+        }
+
+        .memories-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: rgba(30,41,59,0.82);
+            text-shadow: 0 1px 6px rgba(255,255,255,0.6);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        /* ── Calendar card ── */
+        .calendar-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.75);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        /* Month/year nav */
+        .cal-nav {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
+            justify-content: space-between;
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
+        .cal-nav-btn {
+            width: 32px; height: 32px;
+            border: none; background: rgba(0,0,0,0.04); border-radius: 50%;
+            cursor: pointer; font-size: 18px; color: #64748b;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s ease;
         }
+        .cal-nav-btn:hover { background: #fce4ec; color: #e91e63; }
+
+        .cal-title-wrap { display:flex; align-items:center; gap:4px; }
+
+        .cal-month-select, .cal-year-select {
+            border: none; background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.98rem; font-weight: 700; color: #1e293b;
+            cursor: pointer; outline: none;
+            appearance: none; -webkit-appearance: none;
+            padding: 4px 8px; border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .cal-month-select:hover, .cal-year-select:hover { background: #fce4ec; }
+
+        /* Weekday header */
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7,1fr);
+            padding: 8px 10px 2px;
+        }
+        .cal-weekday {
+            text-align: center; font-size: 0.67rem; font-weight: 700;
+            color: #94a3b8; text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .cal-weekday:first-child { color: #f87171; }
+
+        /* Day grid */
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7,1fr);
+            gap: 2px;
+            padding: 4px 10px 14px;
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-size: 0.82rem; font-weight: 500; color: #475569;
+            cursor: pointer; transition: all 0.15s ease;
+            position: relative; user-select: none;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .cal-day:hover:not(.cal-day-empty) { background: #fce4ec; color: #e91e63; }
+        .cal-day.cal-day-empty { cursor:default; color:transparent; pointer-events:none; }
+        .cal-day.cal-day-sunday { color: #f87171; }
+
+        /* Heart indicators — rendered as inline SVG via JS, drawn below the number */
+        .cal-day-num { line-height: 1; }
+        .cal-hearts {
+            display: flex; gap: 1px; align-items: center; justify-content: center;
+            height: 8px;
+        }
+        .cal-hearts svg { display:block; }
+
+        /* Today ring */
+        .cal-day.today:not(.selected) {
+            box-shadow: 0 0 0 2px #f48fb1;
+            color: #e91e63; font-weight: 700;
+        }
+
+        /* Selected */
+        .cal-day.selected {
+            background: linear-gradient(135deg, #f48fb1, #ec407a) !important;
+            color: white !important; font-weight: 700;
+            box-shadow: 0 3px 12px rgba(236,64,122,0.38);
+        }
+        .cal-day.selected .cal-hearts svg path,
+        .cal-day.selected .cal-hearts svg polygon { fill: rgba(255,255,255,0.8) !important; }
+
+        /* ── Day photos section ── */
+        .day-photos-section {
+            padding: 0 14px 18px;
+            min-height: 72px;
+        }
+
+        .day-photos-label {
+            font-size: 0.73rem; font-weight: 700; color: #94a3b8;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 12px; padding-top: 12px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .day-entries { display:flex; flex-direction:column; gap:10px; }
+
+        .day-entry {
+            background: rgba(248,250,252,0.8);
+            border-radius: 14px; overflow:hidden;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .day-entry-header {
+            display:flex; align-items:center;
+            justify-content:space-between;
+            padding: 10px 12px 7px;
+        }
+
+        .day-entry-caption { font-size:0.88rem; font-weight:500; color:#1e293b; flex:1; }
+
+        .day-entry-tag {
+            display:inline-flex; align-items:center; gap:3px;
+            padding: 3px 9px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700;
+            margin-left: 8px; flex-shrink:0; letter-spacing: 0.3px;
+        }
+        .tag-jt  { background:linear-gradient(135deg,#e3f2fd,#bbdefb); color:#1565c0; }
+        .tag-yx  { background:linear-gradient(135deg,#fce4ec,#f8bbd0); color:#c2185b; }
+
+        .day-entry-photos { display:grid; gap:3px; padding:0 3px 3px; }
+        .dep-1    { grid-template-columns:1fr; }
+        .dep-2    { grid-template-columns:1fr 1fr; }
+        .dep-3    { grid-template-columns:1fr 1fr 1fr; }
+        .dep-4    { grid-template-columns:1fr 1fr; }
+        .dep-many { grid-template-columns:1fr 1fr 1fr; }
+
+        .day-photo {
+            aspect-ratio:1; overflow:hidden; border-radius:8px;
+            cursor:pointer; position:relative;
+        }
+        .dep-1 .day-photo { aspect-ratio:16/9; border-radius:10px; }
+        .day-photo img { width:100%; height:100%; object-fit:cover; transition:transform 0.25s ease; }
+        .day-photo:hover img { transform:scale(1.05); }
+        .day-photo-more {
+            position:absolute; inset:0;
+            background:rgba(0,0,0,0.42);
+            display:flex; align-items:center; justify-content:center;
+            color:white; font-size:1rem; font-weight:600; border-radius:8px;
+        }
+
+        .day-empty {
+            text-align:center; padding:20px 0 6px;
+            color:#cbd5e1; font-size:0.82rem;
+        }
+        .day-empty-icon { font-size:1.6rem; margin-bottom:5px; }
+
+        /* Upload FAB */
+        .upload-btn-wrap {
+            display:flex; justify-content:center;
+            margin-top: 6px; margin-bottom: 40px;
+        }
+
+        .upload-fab {
+            width: 54px; height: 54px;
+            background: linear-gradient(135deg, #f48fb1, #ec407a);
+            border: none; border-radius: 50%;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; font-size:30px; font-weight:200; color:white; line-height:1;
+            box-shadow: 0 4px 18px rgba(236,64,122,0.38);
+            transition: all 0.2s ease;
+        }
+        .upload-fab:hover { transform:scale(1.1); box-shadow:0 6px 22px rgba(236,64,122,0.48); }
+        .upload-fab:active { transform:scale(0.95); }
+
+        /* ────────────────────────────────
+           MODALS
+        ──────────────────────────────── */
+        .modal-overlay {
+            position:fixed; inset:0;
+            background:rgba(0,0,0,0.38); backdrop-filter:blur(8px);
+            z-index:300;
+            display:flex; align-items:flex-end; justify-content:center;
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+            opacity:0; pointer-events:none; transition:opacity 0.25s ease;
+        }
+        .modal-overlay.active { opacity:1; pointer-events:all; }
 
         .modal {
-            background: white;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 420px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            transform: translateY(16px) scale(0.97);
-            transition: transform 0.25s ease;
+            background: white; border-radius: 28px 28px 20px 20px;
+            width: 100%; max-width: 480px;
+            padding: 28px 28px max(28px,env(safe-area-inset-bottom));
+            box-shadow: 0 -4px 40px rgba(0,0,0,0.12);
+            transform: translateY(40px);
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative;
+            max-height: 90svh;
+            overflow-y: auto;
+        }
+        .modal-overlay.active .modal { transform: translateY(0); }
+
+        /* Drag handle */
+        .modal::before {
+            content:'';
+            display:block;
+            width:36px; height:4px;
+            background:#e2e8f0; border-radius:2px;
+            margin: 0 auto 20px;
         }
 
-        .modal-overlay.active .modal {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-
-        .modal p.modal-sub {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 24px;
-        }
+        .modal h3 { font-size:1.15rem; font-weight:700; color:#1e293b; margin-bottom:5px; }
+        .modal p.modal-sub { font-size:0.83rem; color:#94a3b8; margin-bottom:22px; }
 
         .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: #f1f5f9;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #64748b;
-            transition: background 0.2s;
+            position:absolute; top:20px; right:20px;
+            width:30px; height:30px; border:none; background:#f1f5f9; border-radius:50%;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            font-size:13px; color:#64748b; transition:background 0.2s;
         }
+        .modal-close:hover { background:#e2e8f0; }
 
-        .modal-close:hover { background: #e2e8f0; }
-
-        /* Password modal */
-        #passwordModal { position: relative; }
-
-        .password-icon {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 16px;
-        }
+        .password-icon { font-size:2.2rem; text-align:center; margin-bottom:14px; }
 
         .modal-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: border-color 0.2s;
-            color: #1e293b;
+            width:100%; padding:12px 16px;
+            border:1.5px solid #e2e8f0; border-radius:12px;
+            font-size:1rem; font-family:'Inter',sans-serif;
+            outline:none; transition:border-color 0.2s; color:#1e293b;
         }
+        .modal-input:focus { border-color:#f48fb1; }
+        .modal-input.error { border-color:#ef4444; animation:shake 0.3s ease; }
+        @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 
-        .modal-input:focus { border-color: #f48fb1; }
-
-        .modal-input.error { border-color: #ef4444; animation: shake 0.3s ease; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
-        }
-
-        .modal-error {
-            font-size: 0.8rem;
-            color: #ef4444;
-            margin-top: 6px;
-            min-height: 18px;
-        }
+        .modal-error { font-size:0.78rem; color:#ef4444; margin-top:5px; min-height:17px; }
 
         .modal-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #f48fb1, #ec407a);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 16px;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(236, 64, 122, 0.3);
+            width:100%; padding:13px;
+            background:linear-gradient(135deg,#f48fb1,#ec407a);
+            color:white; border:none; border-radius:14px;
+            font-size:0.95rem; font-weight:700; cursor:pointer;
+            margin-top:14px; font-family:'Inter',sans-serif;
+            transition:all 0.2s ease; box-shadow:0 4px 14px rgba(236,64,122,0.3);
         }
+        .modal-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(236,64,122,0.38);}
+        .modal-btn:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+        .modal-btn.secondary{background:#f8fafc;color:#64748b;box-shadow:none;border:1px solid #e2e8f0;margin-top:8px;}
+        .modal-btn.secondary:hover{background:#f1f5f9;box-shadow:none;transform:none;}
 
-        .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(236, 64, 122, 0.35); }
-        .modal-btn:active { transform: translateY(0); }
-        .modal-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        .modal-btn.secondary {
-            background: #f8fafc;
-            color: #64748b;
-            box-shadow: none;
-            border: 1px solid #e2e8f0;
+        .upload-for-date {
+            background:linear-gradient(135deg,#fce4ec,#ffd6e0);
+            border-radius:10px; padding:8px 14px;
+            font-size:0.81rem; font-weight:600; color:#c2185b;
+            margin-bottom:16px; text-align:center;
         }
-
-        .modal-btn.secondary:hover { background: #f1f5f9; box-shadow: none; }
-
-        /* Upload modal */
-        #uploadModal { position: relative; }
 
         .upload-dropzone {
-            border: 2px dashed #fce4ec;
-            border-radius: 16px;
-            padding: 32px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #fff5f8;
-            margin-bottom: 16px;
-            position: relative;
+            border:2px dashed #fce4ec; border-radius:14px;
+            padding:26px 16px; text-align:center; cursor:pointer;
+            transition:all 0.2s ease; background:#fff5f8;
+            margin-bottom:12px; position:relative;
         }
+        .upload-dropzone:hover,.upload-dropzone.drag-over{border-color:#f48fb1;background:#fce4ec;}
+        .upload-dropzone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+        .upload-dropzone .drop-icon{font-size:1.7rem;margin-bottom:5px;}
+        .upload-dropzone p{font-size:0.81rem;color:#94a3b8;}
+        .upload-dropzone p strong{color:#e91e63;}
 
-        .upload-dropzone:hover, .upload-dropzone.drag-over {
-            border-color: #f48fb1;
-            background: #fce4ec;
-        }
+        .upload-preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;}
+        .upload-preview-thumb{aspect-ratio:1;border-radius:8px;overflow:hidden;position:relative;}
+        .upload-preview-thumb img{width:100%;height:100%;object-fit:cover;}
+        .remove-thumb{position:absolute;top:2px;right:2px;width:17px;height:17px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-        .upload-dropzone input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            width: 100%;
-            height: 100%;
-        }
+        .modal-label{display:block;font-size:0.79rem;font-weight:600;color:#64748b;margin-bottom:5px;}
 
-        .upload-dropzone .drop-icon { font-size: 2rem; margin-bottom: 8px; }
-        .upload-dropzone p { font-size: 0.85rem; color: #94a3b8; }
-        .upload-dropzone p strong { color: #e91e63; }
-
-        .upload-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
-        .upload-preview-thumb {
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .upload-preview-thumb img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-
-        .upload-preview-thumb .remove-thumb {
-            position: absolute;
-            top: 2px; right: 2px;
-            width: 18px; height: 18px;
-            background: rgba(0,0,0,0.55);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 10px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            line-height: 1;
-        }
-
-        .modal-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .upload-progress {
-            margin-top: 12px;
-            display: none;
-        }
-
-        .progress-bar-wrap {
-            background: #f1f5f9;
-            border-radius: 100px;
-            height: 6px;
-            overflow: hidden;
-            margin-bottom: 6px;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(to right, #f48fb1, #ec407a);
-            border-radius: 100px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .progress-label {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-align: center;
-        }
+        .upload-progress{margin-top:11px;display:none;}
+        .progress-bar-wrap{background:#f1f5f9;border-radius:100px;height:5px;overflow:hidden;margin-bottom:5px;}
+        .progress-bar-fill{height:100%;background:linear-gradient(to right,#f48fb1,#ec407a);border-radius:100px;transition:width 0.3s ease;width:0%;}
+        .progress-label{font-size:0.73rem;color:#94a3b8;text-align:center;}
 
         /* Lightbox */
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 300;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
-
-        .lightbox.active { opacity: 1; pointer-events: all; }
-
-        .lightbox img {
-            max-width: 92vw;
-            max-height: 88vh;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.1);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .lightbox-close:hover { background: rgba(255,255,255,0.2); }
-
-        /* ===================== RESPONSIVE ===================== */
-
-        @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .heart { font-size: 4rem; }
-            .wedding-day .heart { font-size: 5rem; }
-            .wedding-message { padding: 30px 40px; margin: 30px 20px; }
-            .wedding-message h2 { font-size: 1.75rem; }
-            .wedding-day .wedding-message h2 { font-size: 2rem; }
-            .wedding-message p { font-size: 1rem; }
-            .wedding-day .wedding-message p { font-size: 1.1rem; }
-            .time-tracker { padding: 20px 24px; margin: 20px; }
-            .gallery-section { padding: 0 4px 80px; }
-        }
+        .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+        .lightbox.active{opacity:1;pointer-events:all;}
+        .lightbox img{max-width:94vw;max-height:90svh;object-fit:contain;border-radius:8px;}
+        .lightbox-close{position:absolute;top:20px;right:20px;color:white;font-size:26px;cursor:pointer;background:rgba(255,255,255,0.12);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+        .lightbox-close:hover{background:rgba(255,255,255,0.22);}
     </style>
 </head>
 <body>
-    <div class="floating-orbs">
-        <div class="orb"></div><div class="orb"></div>
-        <div class="orb"></div><div class="orb"></div>
-    </div>
-
+    <!-- Particles -->
     <div class="floating-hearts" id="floatingHearts"></div>
-    <div class="heart-shower" id="heartShower"></div>
+    <div class="heart-shower"   id="heartShower"></div>
 
-    <div class="container">
-        <!-- ===== EXISTING CONTENT ===== -->
-        <div class="time-tracker">
-            <h3>Our Love Story Started</h3>
-            <div class="time-display" id="timeDisplay">Loading...</div>
+    <!-- ══════════════════════════════
+         PAGE 1: HERO
+    ══════════════════════════════ -->
+    <section class="page-hero" id="pageHero">
+        <div class="hero-heart-accent">💗</div>
+
+        <!-- Day counter card -->
+        <div class="counter-card">
+            <div class="counter-label">Our Love Story Started</div>
+            <div class="counter-number" id="timeDisplay">…</div>
+            <div class="counter-since">since 03.09.2024</div>
         </div>
 
-        <h1 class="title">猪猪's Love</h1>
-
-        <div class="heart-container">
-            <div class="heart" id="heart">❤️</div>
+        <!-- Quote / special day card -->
+        <div class="quote-card" id="quoteCard">
+            <div class="quote-card-accent">💗</div>
+            <div class="quote-label" id="quoteLabel">Today We Say</div>
+            <div class="quote-title" id="quoteTitle">Loading…</div>
+            <div class="quote-text"  id="quoteText"></div>
         </div>
 
-        <div class="wedding-message" id="weddingMessage">
-            <h2 id="weddingTitle">Loading...</h2>
-            <p id="weddingText">Our love story continues...</p>
+        <!-- Scroll hint -->
+        <div class="scroll-hint" onclick="scrollToMemories()">
+            <div class="scroll-hint-label">Our Memories</div>
+            <div class="scroll-hint-arrow"></div>
         </div>
+    </section>
 
-        <!-- ===== GALLERY SECTION ===== -->
-        <div class="gallery-section">
-            <div class="gallery-section-header">
-                <h2>Our Memories 📸</h2>
-                <p>moments we've shared together</p>
+    <!-- ══════════════════════════════
+         PAGE 2: MEMORIES / CALENDAR
+    ══════════════════════════════ -->
+    <section class="page-memories" id="pageMemories">
+
+        <div class="calendar-card">
+            <!-- Nav -->
+            <div class="cal-nav">
+                <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+                <div class="cal-title-wrap">
+                    <select class="cal-month-select" id="calMonthSelect" onchange="onMonthSelectChange()">
+                        <option value="0">January</option><option value="1">February</option>
+                        <option value="2">March</option><option value="3">April</option>
+                        <option value="4">May</option><option value="5">June</option>
+                        <option value="6">July</option><option value="7">August</option>
+                        <option value="8">September</option><option value="9">October</option>
+                        <option value="10">November</option><option value="11">December</option>
+                    </select>
+                    <select class="cal-year-select" id="calYearSelect" onchange="onYearSelectChange()"></select>
+                </div>
+                <button class="cal-nav-btn" onclick="changeMonth(1)">&#8250;</button>
             </div>
-            <div class="gallery-divider"><span>💕</span></div>
-            <div class="gallery-feed" id="galleryFeed">
-                <div class="gallery-loading">Loading memories... 🌸</div>
+
+            <!-- Weekdays -->
+            <div class="cal-weekdays">
+                <div class="cal-weekday">Sun</div><div class="cal-weekday">Mon</div>
+                <div class="cal-weekday">Tue</div><div class="cal-weekday">Wed</div>
+                <div class="cal-weekday">Thu</div><div class="cal-weekday">Fri</div>
+                <div class="cal-weekday">Sat</div>
+            </div>
+
+            <!-- Day cells (JS-rendered) -->
+            <div class="cal-grid" id="calGrid"></div>
+
+            <!-- Selected-day photos -->
+            <div class="day-photos-section" id="dayPhotosSection">
+                <div class="day-photos-label">Select a day</div>
+                <div class="day-empty">
+                    <div class="day-empty-icon">🌸</div>
+                    <p>Tap a date to see memories</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ===== UPLOAD TRIGGER ===== -->
-    <div class="upload-trigger" id="uploadTrigger" title="Add memories">🔒</div>
+        <!-- + Upload button -->
+        <div class="upload-btn-wrap">
+            <button class="upload-fab" onclick="onUploadFabClick()" title="Add a memory">+</button>
+        </div>
+    </section>
 
-    <!-- ===== PASSWORD MODAL ===== -->
+    <!-- ══════════ PASSWORD MODAL ══════════ -->
     <div class="modal-overlay" id="passwordOverlay">
-        <div class="modal" id="passwordModal">
-            <button class="modal-close" onclick="closePasswordModal()">✕</button>
+        <div class="modal">
+            <button class="modal-close" onclick="closePasswordModal()">&#10005;</button>
             <div class="password-icon">🔐</div>
             <h3>Private Access</h3>
-            <p class="modal-sub">Enter the password to add memories</p>
+            <p class="modal-sub">Enter your password to add a memory</p>
             <input type="password" class="modal-input" id="passwordInput"
-                   placeholder="Password" onkeydown="if(event.key==='Enter') checkPassword()">
+                   placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
             <div class="modal-error" id="passwordError"></div>
             <button class="modal-btn" onclick="checkPassword()">Unlock ✨</button>
         </div>
     </div>
 
-    <!-- ===== UPLOAD MODAL ===== -->
+    <!-- ══════════ UPLOAD MODAL ══════════ -->
     <div class="modal-overlay" id="uploadOverlay">
-        <div class="modal" id="uploadModal">
-            <button class="modal-close" onclick="closeUploadModal()">✕</button>
+        <div class="modal">
+            <button class="modal-close" onclick="closeUploadModal()">&#10005;</button>
             <h3>Add a Memory 🌸</h3>
-            <p class="modal-sub">Upload photos and write a little caption</p>
+            <p class="modal-sub">Photos will be saved to the selected date</p>
+            <div class="upload-for-date" id="uploadForDateLabel">📅 —</div>
 
             <div class="upload-dropzone" id="dropzone">
                 <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFileSelect(this.files)">
                 <div class="drop-icon">📷</div>
-                <p><strong>Choose photos</strong> or drag & drop</p>
-                <p style="margin-top:4px; font-size:0.75rem;">JPG, PNG, HEIC — up to 10 photos</p>
+                <p><strong>Choose photos</strong> or drag &amp; drop</p>
+                <p style="margin-top:3px;font-size:0.74rem;">JPG, PNG, HEIC — up to 10 photos</p>
             </div>
-
             <div class="upload-preview-grid" id="previewGrid"></div>
 
             <label class="modal-label">Caption (optional)</label>
             <input type="text" class="modal-input" id="captionInput"
-                   placeholder="e.g. 广阔的山和海，还有我和你 ❤️"
-                   style="margin-bottom:16px;">
+                   placeholder="e.g. 广阔的山和海，还有我和你 ❤️" style="margin-bottom:14px;">
 
             <div class="upload-progress" id="uploadProgress">
-                <div class="progress-bar-wrap">
-                    <div class="progress-bar-fill" id="progressFill"></div>
-                </div>
-                <div class="progress-label" id="progressLabel">Uploading...</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+                <div class="progress-label" id="progressLabel">Uploading…</div>
             </div>
 
             <button class="modal-btn" id="submitBtn" onclick="submitUpload()">Post Memory 💕</button>
-            <button class="modal-btn secondary" onclick="closeUploadModal()" style="margin-top:8px;">Cancel</button>
+            <button class="modal-btn secondary" onclick="closeUploadModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- ===== LIGHTBOX ===== -->
+    <!-- ══════════ LIGHTBOX ══════════ -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+        <div class="lightbox-close" onclick="closeLightbox()">&#10005;</div>
         <img id="lightboxImg" src="" alt="">
     </div>
 
     <script>
-        // ===================== EXISTING LOGIC =====================
+    // ═══════════════════════════════════════
+    // SPECIAL DAYS
+    // ═══════════════════════════════════════
 
-        const hearts = ['❤️','💖','💝','💗','💕','💘','🧡','💛','💚','💙','💜','🤍','🖤','💯'];
-        const weddingHearts = ['💍','💝','💞'];
+    const HEARTS_POOL = ['❤️','💖','💝','💗','💕','💘','🧡','💛','💚','💙','💜','🤍','🖤','💯'];
+    const WEDDING_HEARTS     = ['💍','💝','💞'];
+    const ANNIVERSARY_HEARTS = ['💕','🌸','💗','🌷','💓','✨','🩷'];
 
-        const loveQuotes = [
-            { title: "Every Love Story", text: "Every love story is beautiful, but ours is my favorite" },
-            { title: "You Are My Today", text: "You are my today and all of my tomorrows" },
-            { title: "Home Is", text: "Home isn't a place, it's a person. You are my home" },
-            { title: "Perfect Together", text: "We're not perfect, but we're perfect together" },
-            { title: "My Heart", text: "In your smile, I see something more beautiful than stars" },
-            { title: "Forever Yours", text: "I choose you. And I'll choose you over and over" },
-            { title: "Best Friend", text: "You're my person, my best friend, my everything" },
-            { title: "Love Language", text: "Your laugh is my favorite love language" },
-            { title: "Adventure", text: "Life with you is my greatest adventure" },
-            { title: "Lucky Me", text: "How lucky I am to have something that makes saying goodbye so hard" },
-            { title: "Endless Love", text: "I love you more than yesterday, less than tomorrow" },
-            { title: "Together", text: "Together is my favorite place to be" },
-            { title: "Magic Moments", text: "Every moment with you feels like magic" },
-            { title: "Soulmate", text: "You're not just my love, you're my soulmate" },
-            { title: "Dream Come True", text: "You are my dream come true" },
-            { title: "Better Half", text: "You make me a better person just by being yourself" },
-            { title: "Always & Forever", text: "I want all of my lasts to be with you" },
-            { title: "My Everything", text: "You are my sun, my moon, and all my stars" },
-            { title: "Heart's Desire", text: "My heart is perfect because you are in it" },
-            { title: "Love Story", text: "Our love story is my favorite fairy tale" },
-            { title: "Infinite Love", text: "I love you to infinity and beyond" },
-            { title: "Sweet Dreams", text: "You're the first thing I think of when I wake up" },
-            { title: "True Love", text: "True love never ends, and ours is just beginning" },
-            { title: "Missing You", text: "Even when we're together, I miss you" },
-            { title: "Perfect Match", text: "We fit together like puzzle pieces" },
-            { title: "Beautiful Soul", text: "I fell in love with your soul before I knew your name" },
-            { title: "Grateful Heart", text: "My heart is full of gratitude for you" },
-            { title: "Special Someone", text: "You're not just someone special, you're my someone" },
-            { title: "Love Grows", text: "Every day I love you more than the day before" },
-            { title: "My Treasure", text: "You are my greatest treasure and my sweetest blessing" },
-            { title: "Butterflies", text: "You still give me butterflies every single day" },
-            { title: "Safe Haven", text: "In your arms, I've found my safe haven" },
-            { title: "Meant To Be", text: "We were meant to be together, I'm sure of it" },
-            { title: "Love's Power", text: "Your love gives me strength to conquer anything" },
-            { title: "Happiness", text: "You are my happiness in human form" },
-            { title: "Forever Mine", text: "I want to be yours forever and a day" },
-            { title: "Love Letters", text: "Your eyes tell love stories that words could never capture" },
-            { title: "Heart Skip", text: "You make my heart skip beats and my soul sing" },
-            { title: "Lucky Stars", text: "I must have wished on every lucky star to find you" },
-            { title: "Perfect Love", text: "Our love isn't perfect, but it's perfectly ours" },
-            { title: "Sweet Moments", text: "The sweetest moments are the ones we share together" },
-            { title: "Love's Promise", text: "I promise to love you through all seasons of life" },
-            { title: "My Anchor", text: "You are my anchor in this chaotic world" },
-            { title: "Love's Journey", text: "Our love journey has just begun" },
-            { title: "Heart's Home", text: "My heart has found its home in you" },
-            { title: "Endless Joy", text: "You bring endless joy to my ordinary days" },
-            { title: "Love's Miracle", text: "You are the miracle I never knew I needed" },
-            { title: "Together Always", text: "With you, I want to write our forever story" },
-            { title: "Love's Gift", text: "Your love is the greatest gift I've ever received" },
-            { title: "My Universe", text: "You are my entire universe in one person" },
-            { title: "Sweet Love", text: "Your love is sweeter than honey, warmer than sunshine" },
-            { title: "Perfect Timing", text: "We found each other at exactly the right time" },
-            { title: "Love's Wonder", text: "I wonder how I lived before I met you" }
-        ];
+    const LOVE_QUOTES = [
+        {t:"Every Love Story",    b:"Every love story is beautiful, but ours is my favorite"},
+        {t:"You Are My Today",    b:"You are my today and all of my tomorrows"},
+        {t:"Home Is",             b:"Home isn't a place, it's a person. You are my home"},
+        {t:"Perfect Together",    b:"We're not perfect, but we're perfect together"},
+        {t:"My Heart",            b:"In your smile, I see something more beautiful than stars"},
+        {t:"Forever Yours",       b:"I choose you. And I'll choose you over and over"},
+        {t:"Best Friend",         b:"You're my person, my best friend, my everything"},
+        {t:"Love Language",       b:"Your laugh is my favorite love language"},
+        {t:"Adventure",           b:"Life with you is my greatest adventure"},
+        {t:"Lucky Me",            b:"How lucky I am to have something that makes saying goodbye so hard"},
+        {t:"Endless Love",        b:"I love you more than yesterday, less than tomorrow"},
+        {t:"Together",            b:"Together is my favorite place to be"},
+        {t:"Magic Moments",       b:"Every moment with you feels like magic"},
+        {t:"Soulmate",            b:"You're not just my love, you're my soulmate"},
+        {t:"Dream Come True",     b:"You are my dream come true"},
+        {t:"Better Half",         b:"You make me a better person just by being yourself"},
+        {t:"Always & Forever",    b:"I want all of my lasts to be with you"},
+        {t:"My Everything",       b:"You are my sun, my moon, and all my stars"},
+        {t:"Butterflies",         b:"You still give me butterflies every single day"},
+        {t:"Safe Haven",          b:"In your arms, I've found my safe haven"},
+        {t:"Meant To Be",         b:"We were meant to be together, I'm sure of it"},
+        {t:"Happiness",           b:"You are my happiness in human form"},
+        {t:"Lucky Stars",         b:"I must have wished on every lucky star to find you"},
+        {t:"Perfect Love",        b:"Our love isn't perfect, but it's perfectly ours"},
+        {t:"Sweet Moments",       b:"The sweetest moments are the ones we share together"},
+        {t:"My Anchor",           b:"You are my anchor in this chaotic world"},
+        {t:"Heart's Home",        b:"My heart has found its home in you"},
+        {t:"Love's Miracle",      b:"You are the miracle I never knew I needed"},
+        {t:"My Universe",         b:"You are my entire universe in one person"},
+        {t:"Perfect Timing",      b:"We found each other at exactly the right time"},
+        {t:"Love's Wonder",       b:"I wonder how I lived before I met you"}
+    ];
 
-        function isweddingDay() {
-            const today = new Date();
-            const weddingDate = new Date(2025,7,15,16,0,0,0);
-            return today.toDateString() === weddingDate.toDateString();
+    const now = new Date();
+
+    function isWeddingDay()     { return now.getMonth()===7  && now.getDate()===15 && now.getFullYear()===2025; }
+    function isAnniversaryDay() { return now.getMonth()===2  && now.getDate()===9; }
+
+    function yearsText() {
+        const y = now.getFullYear() - 2024;
+        if (y <= 0) return 'our very first year together';
+        if (y === 1) return '1 whole year together';
+        return `${y} beautiful years together`;
+    }
+
+    // Update counter
+    function updateCounter() {
+        const days = Math.floor((now - new Date('2024-03-09')) / 86400000);
+        document.getElementById('timeDisplay').innerHTML =
+            `${days}<span>Days</span>`;
+    }
+
+    // Update quote card
+    function updateQuote() {
+        const lbl   = document.getElementById('quoteLabel');
+        const title = document.getElementById('quoteTitle');
+        const text  = document.getElementById('quoteText');
+        if (isWeddingDay()) {
+            lbl.textContent   = '🎊 We Got Married!';
+            title.textContent = 'Forever Together';
+            text.textContent  = '💍 Today we begin forever 💍';
+        } else if (isAnniversaryDay()) {
+            lbl.textContent   = '🌸 Happy Anniversary';
+            title.textContent = `${yearsText()}`;
+            text.textContent  = 'Every single day has been my favorite 💕';
+        } else {
+            const q = LOVE_QUOTES[Math.floor(Math.random() * LOVE_QUOTES.length)];
+            lbl.textContent   = 'Today We Say';
+            title.textContent = q.t;
+            text.textContent  = q.b;
+        }
+    }
+
+    // Special day body class + effects
+    function applySpecialDay() {
+        if (isWeddingDay()) {
+            document.body.classList.add('wedding-day');
+            startShower(WEDDING_HEARTS);
+            setInterval(spawnHeart, 200);
+        } else if (isAnniversaryDay()) {
+            document.body.classList.add('anniversary-day');
+            startShower(ANNIVERSARY_HEARTS);
+            setInterval(spawnHeart, 320);
+        }
+    }
+
+    function startShower(set) {
+        setInterval(() => {
+            for (let i = 0; i < 3; i++) setTimeout(() => {
+                const el = document.createElement('div');
+                el.className = 'shower-heart';
+                el.textContent = set[Math.floor(Math.random() * set.length)];
+                el.style.left  = Math.random()*100+'%';
+                el.style.animationDelay    = Math.random()*2+'s';
+                el.style.animationDuration = (Math.random()*2+3)+'s';
+                el.style.color = isAnniversaryDay()
+                    ? `hsl(${Math.random()*40+300},80%,65%)`
+                    : `hsl(${Math.random()*60+320},70%,60%)`;
+                document.getElementById('heartShower').appendChild(el);
+                setTimeout(() => el.remove(), 5000);
+            }, i*200);
+        }, 800);
+    }
+
+    function spawnHeart() {
+        const el = document.createElement('div');
+        el.className = 'floating-heart';
+        const set = isWeddingDay() ? WEDDING_HEARTS : isAnniversaryDay() ? ANNIVERSARY_HEARTS : ['💕'];
+        el.textContent = set[Math.floor(Math.random()*set.length)];
+        el.style.left  = Math.random()*100+'%';
+        el.style.animationDelay    = Math.random()*2+'s';
+        el.style.animationDuration = (Math.random()*3+6)+'s';
+        document.getElementById('floatingHearts').appendChild(el);
+        setTimeout(() => el.remove(), 9000);
+    }
+
+    function createSparkles() {
+        const n = (isWeddingDay()||isAnniversaryDay()) ? 50 : 30;
+        for (let i=0; i<n; i++) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random()*100+'%';
+            s.style.top  = Math.random()*100+'%';
+            s.style.animationDelay    = Math.random()*3+'s';
+            s.style.animationDuration = (Math.random()*2+2)+'s';
+            document.body.appendChild(s);
+        }
+    }
+
+    // Scroll to memories section
+    function scrollToMemories() {
+        document.getElementById('pageMemories').scrollIntoView({ behavior:'smooth' });
+    }
+
+    // ═══════════════════════════════════════
+    // CONFIG
+    // ═══════════════════════════════════════
+
+    const GITHUB_OWNER  = 'jtloveguagua';
+    const GITHUB_REPO   = 'jtloveguagua.github.io';
+    const GITHUB_BRANCH = 'main';
+    const MANIFEST_PATH = 'photos/manifest.json';
+
+    // jt = 0815  →  SHA-256 = c57a5df4f97ed6914116e5fd1348406064834f22503d890eb571af442ac4b4c3
+    // yx = 0309  →  SHA-256 = 5a796fc123ab4b7a692b6c57a8d78c013c34f7f0f9339e1d16f1d8942ad8af10
+    const USERS = {
+        'c57a5df4f97ed6914116e5fd1348406064834f22503d890eb571af442ac4b4c3':
+            { id:'jt', label:'JT 👦', tagClass:'tag-jt' },
+        '5a796fc123ab4b7a692b6c57a8d78c013c34f7f0f9339e1d16f1d8942ad8af10':
+            { id:'yx', label:'YX 👧', tagClass:'tag-yx' }
+    };
+
+    const _t = ['ghp_mtndSb3PV2','yDS7Vr0FpVhP5','WxeT4j549NZla'];
+    const getToken = () => _t.join('');
+
+    // ═══════════════════════════════════════
+    // AUTH
+    // ═══════════════════════════════════════
+
+    let currentUser = null;
+
+    async function hashStr(s) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+
+    // ═══════════════════════════════════════
+    // CALENDAR
+    // ═══════════════════════════════════════
+
+    const today    = new Date();
+    let calYear    = today.getFullYear();
+    let calMonth   = today.getMonth();
+    let selDate    = null;
+    let manifest   = [];
+
+    const MONTH_NAMES  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function fmtDate(y,m,d) {
+        return`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    }
+
+    function initYearSelect() {
+        const sel = document.getElementById('calYearSelect');
+        for (let y=2024; y<=today.getFullYear()+2; y++) {
+            const o = document.createElement('option');
+            o.value=y; o.textContent=y;
+            if(y===calYear) o.selected=true;
+            sel.appendChild(o);
+        }
+    }
+
+    // Heart SVG helpers — inline SVG so we can style with CSS
+    function heartSVG(color, size=7) {
+        // Classic heart using a path
+        return `<svg width="${size}" height="${size}" viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 17C10 17 1 11 1 5.5A4.5 4.5 0 0 1 10 3.527 4.5 4.5 0 0 1 19 5.5C19 11 10 17 10 17Z"
+                  fill="${color}" stroke="none"/>
+        </svg>`;
+    }
+
+    function renderCalendar() {
+        document.getElementById('calMonthSelect').value = calMonth;
+        document.getElementById('calYearSelect').value  = calYear;
+
+        const grid = document.getElementById('calGrid');
+        grid.innerHTML = '';
+
+        const firstDow     = new Date(calYear, calMonth, 1).getDay();
+        const daysInMonth  = new Date(calYear, calMonth+1, 0).getDate();
+
+        // Empty leading cells
+        for (let i=0; i<firstDow; i++) {
+            const e = document.createElement('div');
+            e.className = 'cal-day cal-day-empty';
+            grid.appendChild(e);
         }
 
-        function applyweddingDayStyle() {
-            if (isweddingDay()) {
-                document.body.classList.add('wedding-day');
-                createHeartShower();
-                setInterval(createFloatingHeart, 200);
+        for (let d=1; d<=daysInMonth; d++) {
+            const dateStr = fmtDate(calYear, calMonth, d);
+            const div     = document.createElement('div');
+            const classes = ['cal-day'];
+            const dow = new Date(calYear, calMonth, d).getDay();
+            if (dow===0) classes.push('cal-day-sunday');
+
+            const isToday   = calYear===today.getFullYear() && calMonth===today.getMonth() && d===today.getDate();
+            const isSel     = dateStr === selDate;
+            if (isToday) classes.push('today');
+            if (isSel)   classes.push('selected');
+
+            div.className = classes.join(' ');
+
+            // Build inner HTML: number + heart row
+            const entries = getEntriesForDate(dateStr);
+            const hasJT   = entries.some(e=>e.user==='jt');
+            const hasYX   = entries.some(e=>e.user==='yx');
+
+            let heartsHTML = '';
+            if (hasJT || hasYX) {
+                const jtColor = isSel ? 'rgba(255,255,255,0.85)' : '#5b9bd5';
+                const yxColor = isSel ? 'rgba(255,255,255,0.85)' : '#e91e8c';
+                heartsHTML = '<div class="cal-hearts">';
+                if (hasJT) heartsHTML += heartSVG(jtColor, 7);
+                if (hasYX) heartsHTML += heartSVG(yxColor, 7);
+                heartsHTML += '</div>';
             }
-        }
 
-        function createHeartShower() {
-            if (!isweddingDay()) return;
-            setInterval(() => {
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        const heart = document.createElement('div');
-                        heart.className = 'shower-heart';
-                        heart.textContent = weddingHearts[Math.floor(Math.random() * weddingHearts.length)];
-                        heart.style.left = Math.random() * 100 + '%';
-                        heart.style.animationDelay = Math.random() * 2 + 's';
-                        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                        heart.style.color = `hsl(${Math.random() * 60 + 320}, 70%, 60%)`;
-                        document.getElementById('heartShower').appendChild(heart);
-                        setTimeout(() => heart.remove(), 5000);
-                    }, i * 200);
-                }
-            }, 800);
-        }
-
-        function updateTimeTracker() {
-            const startDate = new Date('2024-03-09');
-            const now = new Date();
-            const days = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-            document.getElementById('timeDisplay').innerHTML = `${days} days`;
-        }
-
-        function updateweddingMessage() {
-            if (isweddingDay()) {
-                document.getElementById('weddingTitle').textContent = "We Got Married!";
-                document.getElementById('weddingText').textContent = "💍 Forever Together 💍";
-            } else {
-                const randomIndex = Math.floor(Math.random() * loveQuotes.length);
-                const quote = loveQuotes[randomIndex];
-                document.getElementById('weddingTitle').textContent = quote.title;
-                document.getElementById('weddingText').textContent = quote.text;
-            }
-        }
-
-        function setDailyHeart() {
-            if (isweddingDay()) {
-                document.getElementById('heart').textContent = '❤️';
-            } else {
-                const today = new Date();
-                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-                document.getElementById('heart').textContent = hearts[dayOfYear % hearts.length];
-            }
-        }
-
-        function createFloatingHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = isweddingDay() ? weddingHearts[Math.floor(Math.random() * weddingHearts.length)] : '💕';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 2 + 's';
-            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            document.getElementById('floatingHearts').appendChild(heart);
-            setTimeout(() => heart.remove(), 8000);
-        }
-
-        function createSparkles() {
-            const sparkleCount = isweddingDay() ? 50 : 30;
-            for (let i = 0; i < sparkleCount; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 3 + 's';
-                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(sparkle);
-            }
-        }
-
-        updateTimeTracker();
-        setDailyHeart();
-        updateweddingMessage();
-        applyweddingDayStyle();
-        createSparkles();
-        setInterval(updateTimeTracker, 60000);
-        setInterval(updateweddingMessage, 3600000);
-        setInterval(createFloatingHeart, isweddingDay() ? 300 : 600);
-
-        document.getElementById('heart').addEventListener('click', function() {
-            this.style.transform = `scale(${isweddingDay() ? 1.4 : 1.3})`;
-            setTimeout(() => { this.style.transform = 'scale(1)'; }, 200);
-        });
-
-        // ===================== GALLERY + UPLOAD LOGIC =====================
-
-        // --- Config ---
-        const GITHUB_OWNER = 'jtloveguagua';
-        const GITHUB_REPO  = 'jtloveguagua.github.io';
-        const GITHUB_BRANCH = 'main';
-        // Simple password hash check (SHA-256 of "19961997WT")
-        const PASSWORD_HASH = '5a796fc123ab4b7a692b6c57a8d78c013c34f7f0f9339e1d16f1d8942ad8af10';
-        // The actual token is stored split to make casual inspection harder.
-        // IMPORTANT: Replace the parts below with your real GitHub token split into 3 parts.
-        // e.g. if token is "ghp_ABC123XYZ" split as: "ghp_AB" + "C123" + "XYZ"
-        const _t = ['ghp_mtndSb3PV2', 'yDS7Vr0FpVhP5', 'WxeT4j549NZla'];
-        const getToken = () => _t.join('');
-
-        const MANIFEST_PATH = 'photos/manifest.json';
-
-        // --- Password ---
-        let isUnlocked = false;
-
-        document.getElementById('uploadTrigger').addEventListener('click', () => {
-            if (isUnlocked) {
-                openUploadModal();
-            } else {
-                document.getElementById('passwordOverlay').classList.add('active');
-                setTimeout(() => document.getElementById('passwordInput').focus(), 300);
-            }
-        });
-
-        async function hashPassword(str) {
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-        }
-
-        async function checkPassword() {
-            const val = document.getElementById('passwordInput').value;
-            const errEl = document.getElementById('passwordError');
-            const inputEl = document.getElementById('passwordInput');
-            const hash = await hashPassword(val);
-            if (hash === PASSWORD_HASH) {
-                isUnlocked = true;
-                document.getElementById('uploadTrigger').textContent = '📸';
-                closePasswordModal();
-                setTimeout(openUploadModal, 300);
-            } else {
-                errEl.textContent = 'Incorrect password. Try again.';
-                inputEl.classList.add('error');
-                setTimeout(() => { inputEl.classList.remove('error'); errEl.textContent = ''; }, 1500);
-            }
-        }
-
-        function closePasswordModal() {
-            document.getElementById('passwordOverlay').classList.remove('active');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordError').textContent = '';
-        }
-
-        // --- Upload modal ---
-        let selectedFiles = [];
-
-        function openUploadModal() {
-            selectedFiles = [];
-            document.getElementById('previewGrid').innerHTML = '';
-            document.getElementById('captionInput').value = '';
-            document.getElementById('uploadProgress').style.display = 'none';
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('uploadOverlay').classList.add('active');
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadOverlay').classList.remove('active');
-        }
-
-        // Drag & drop
-        const dropzone = document.getElementById('dropzone');
-        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
-        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
-        dropzone.addEventListener('drop', e => {
-            e.preventDefault();
-            dropzone.classList.remove('drag-over');
-            handleFileSelect(e.dataTransfer.files);
-        });
-
-        function handleFileSelect(files) {
-            const remaining = 10 - selectedFiles.length;
-            const toAdd = Array.from(files).slice(0, remaining);
-            toAdd.forEach(file => {
-                if (!file.type.startsWith('image/')) return;
-                selectedFiles.push(file);
-                const reader = new FileReader();
-                reader.onload = e => addPreviewThumb(e.target.result, selectedFiles.length - 1);
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function addPreviewThumb(src, index) {
-            const grid = document.getElementById('previewGrid');
-            const div = document.createElement('div');
-            div.className = 'upload-preview-thumb';
-            div.dataset.index = index;
-            div.innerHTML = `<img src="${src}"><button class="remove-thumb" onclick="removeThumb(${index})">✕</button>`;
+            div.innerHTML = `<span class="cal-day-num">${d}</span>${heartsHTML}`;
+            div.addEventListener('click', () => selectDay(dateStr));
             grid.appendChild(div);
         }
+    }
 
-        function removeThumb(index) {
-            selectedFiles.splice(index, 1);
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = '';
-            selectedFiles.forEach((_, i) => {
-                const reader = new FileReader();
-                reader.onload = e => addPreviewThumb(e.target.result, i);
-                reader.readAsDataURL(selectedFiles[i]);
-            });
-        }
+    function selectDay(dateStr) {
+        selDate = dateStr;
+        renderCalendar();
+        renderDayPhotos(dateStr);
+    }
 
-        // --- GitHub API upload ---
-        async function submitUpload() {
-            if (selectedFiles.length === 0) {
-                alert('Please select at least one photo 📸');
-                return;
-            }
-            const caption = document.getElementById('captionInput').value.trim();
-            const btn = document.getElementById('submitBtn');
-            const progressEl = document.getElementById('uploadProgress');
-            const progressFill = document.getElementById('progressFill');
-            const progressLabel = document.getElementById('progressLabel');
+    function changeMonth(delta) {
+        calMonth += delta;
+        if (calMonth>11) { calMonth=0; calYear++; }
+        if (calMonth<0)  { calMonth=11; calYear--; }
+        document.getElementById('calMonthSelect').value = calMonth;
+        document.getElementById('calYearSelect').value  = calYear;
+        renderCalendar();
+        if (selDate) renderDayPhotos(selDate);
+    }
 
-            btn.disabled = true;
-            progressEl.style.display = 'block';
+    function onMonthSelectChange() { calMonth=parseInt(document.getElementById('calMonthSelect').value); renderCalendar(); }
+    function onYearSelectChange()  { calYear=parseInt(document.getElementById('calYearSelect').value);  renderCalendar(); }
 
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const timeStr = now.toTimeString().slice(0,5);
-            const folderName = `photos/${dateStr}_${Date.now()}`;
-            const uploadedFilenames = [];
+    // ═══════════════════════════════════════
+    // DAY PHOTOS
+    // ═══════════════════════════════════════
 
-            try {
-                for (let i = 0; i < selectedFiles.length; i++) {
-                    const file = selectedFiles[i];
-                    const pct = Math.round((i / selectedFiles.length) * 80);
-                    progressFill.style.width = pct + '%';
-                    progressLabel.textContent = `Uploading photo ${i+1} of ${selectedFiles.length}...`;
+    function getEntriesForDate(ds) { return manifest.filter(e=>e.date===ds); }
 
-                    const base64 = await fileToBase64(file);
-                    const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
-                    const filename = `photo_${i+1}.${ext}`;
-                    const path = `${folderName}/${filename}`;
+    function renderDayPhotos(ds) {
+        const section = document.getElementById('dayPhotosSection');
+        const p = ds.split('-');
+        const lbl = `${SHORT_MONTHS[parseInt(p[1])-1]} ${parseInt(p[2])}, ${p[0]}`;
+        const entries = getEntriesForDate(ds);
 
-                    await githubPut(path, base64, `Add memory photo ${filename}`);
-                    uploadedFilenames.push(`${folderName}/${filename}`);
-                }
+        let html = `<div class="day-photos-label">${lbl}</div>`;
 
-                progressFill.style.width = '90%';
-                progressLabel.textContent = 'Saving memory...';
-
-                // Update manifest
-                await updateManifest({
-                    date: dateStr,
-                    time: timeStr,
-                    caption: caption || '💕',
-                    photos: uploadedFilenames
+        if (!entries.length) {
+            html += `<div class="day-empty"><div class="day-empty-icon">🌸</div><p>No memories yet for this day</p></div>`;
+        } else {
+            html += '<div class="day-entries">';
+            entries.forEach(entry => {
+                const isYX  = entry.user==='yx';
+                const tClass = isYX ? 'tag-yx' : 'tag-jt';
+                const tLabel = isYX ? 'YX 👧' : 'JT 👦';
+                const photos = entry.photos||[];
+                const cc = photos.length===1?'dep-1':photos.length===2?'dep-2':photos.length===3?'dep-3':photos.length===4?'dep-4':'dep-many';
+                const disp = photos.slice(0,6);
+                const extra = photos.length-6;
+                let pHTML = '';
+                disp.forEach((ph,pi) => {
+                    const url=`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${ph}`;
+                    const isLast = pi===disp.length-1 && extra>0;
+                    pHTML+=`<div class="day-photo" onclick="openLightbox('${url}')"><img src="${url}" alt="" loading="lazy">${isLast?`<div class="day-photo-more">+${extra}</div>`:''}</div>`;
                 });
-
-                progressFill.style.width = '100%';
-                progressLabel.textContent = 'Done! 🌸';
-
-                setTimeout(() => {
-                    closeUploadModal();
-                    loadGallery();
-                }, 800);
-
-            } catch (err) {
-                console.error(err);
-                progressLabel.textContent = '❌ Upload failed. Check your token & internet.';
-                btn.disabled = false;
-            }
-        }
-
-        function fileToBase64(file) {
-            return new Promise((res, rej) => {
-                const reader = new FileReader();
-                reader.onload = () => res(reader.result.split(',')[1]);
-                reader.onerror = rej;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function githubPut(path, base64Content, message) {
-            // Check if file exists (to get SHA for update)
-            let sha = null;
-            try {
-                const check = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-                    { headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' } }
-                );
-                if (check.ok) {
-                    const data = await check.json();
-                    sha = data.sha;
-                }
-            } catch(e) {}
-
-            const body = {
-                message,
-                content: base64Content,
-                branch: GITHUB_BRANCH
-            };
-            if (sha) body.sha = sha;
-
-            const res = await fetch(
-                `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${getToken()}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                }
-            );
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || 'GitHub API error');
-            }
-            return res.json();
-        }
-
-        async function updateManifest(newEntry) {
-            let entries = [];
-            let sha = null;
-
-            // Try to fetch existing manifest
-            try {
-                const res = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,
-                    { headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' } }
-                );
-                if (res.ok) {
-                    const data = await res.json();
-                    sha = data.sha;
-                    entries = JSON.parse(atob(data.content.replace(/\n/g, '')));
-                }
-            } catch(e) {}
-
-            // Prepend new entry (newest first)
-            entries.unshift(newEntry);
-
-            const content = btoa(unescape(encodeURIComponent(JSON.stringify(entries, null, 2))));
-            const body = {
-                message: 'Update photo manifest',
-                content,
-                branch: GITHUB_BRANCH
-            };
-            if (sha) body.sha = sha;
-
-            const res = await fetch(
-                `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${getToken()}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                }
-            );
-            if (!res.ok) throw new Error('Failed to update manifest');
-        }
-
-        // --- Gallery rendering ---
-        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-        async function loadGallery() {
-            const feed = document.getElementById('galleryFeed');
-            feed.innerHTML = '<div class="gallery-loading">Loading memories... 🌸</div>';
-
-            try {
-                const res = await fetch(
-                    `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${MANIFEST_PATH}?t=${Date.now()}`
-                );
-                if (!res.ok) throw new Error('No manifest yet');
-                const entries = await res.json();
-
-                if (!entries || entries.length === 0) {
-                    showEmptyState(feed);
-                    return;
-                }
-
-                feed.innerHTML = '';
-                entries.forEach((entry, i) => {
-                    const card = buildCard(entry, i);
-                    feed.appendChild(card);
-                });
-
-            } catch(e) {
-                showEmptyState(feed);
-            }
-        }
-
-        function buildCard(entry, animIndex) {
-            const dateParts = entry.date ? entry.date.split('-') : ['2024','01','01'];
-            const day = parseInt(dateParts[2]);
-            const month = MONTHS[parseInt(dateParts[1]) - 1] || '';
-            const year = dateParts[0];
-
-            const card = document.createElement('div');
-            card.className = 'gallery-card';
-            card.style.animationDelay = (animIndex * 0.08) + 's';
-
-            const displayPhotos = entry.photos.slice(0, 6);
-            const extra = entry.photos.length - 6;
-            const countClass = entry.photos.length === 1 ? 'count-1'
-                             : entry.photos.length === 2 ? 'count-2'
-                             : entry.photos.length === 3 ? 'count-3'
-                             : entry.photos.length === 4 ? 'count-4'
-                             : entry.photos.length === 5 ? 'count-5' : 'count-many';
-
-            let photosHTML = '';
-            displayPhotos.forEach((photoPath, pi) => {
-                const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${photoPath}`;
-                const isLast = pi === displayPhotos.length - 1 && extra > 0;
-                photosHTML += `
-                    <div class="card-photo" onclick="openLightbox('${rawUrl}')">
-                        <img src="${rawUrl}" alt="Memory photo" loading="lazy">
-                        ${isLast ? `<div class="card-photo-more">+${extra}</div>` : ''}
-                    </div>`;
-            });
-
-            card.innerHTML = `
-                <div class="gallery-card-header">
-                    <div class="card-date-badge">
-                        <span class="card-date-day">${day}</span>
-                        <span class="card-date-month">${month} ${year}</span>
+                html+=`<div class="day-entry">
+                    <div class="day-entry-header">
+                        <div class="day-entry-caption">${esc(entry.caption||'💕')}</div>
+                        <span class="day-entry-tag ${tClass}">${tLabel}</span>
                     </div>
-                    <div class="card-meta">
-                        <div class="card-caption">${escapeHtml(entry.caption || '💕')}</div>
-                        <div class="card-timestamp">${entry.time || ''}</div>
-                    </div>
-                </div>
-                <div class="card-photos ${countClass}">${photosHTML}</div>
-            `;
-            return card;
-        }
-
-        function showEmptyState(feed) {
-            feed.innerHTML = `
-                <div class="gallery-empty">
-                    <div class="empty-icon">📷</div>
-                    <p>No memories yet.<br>Tap the 🔒 button to add your first one!</p>
+                    ${photos.length?`<div class="day-entry-photos ${cc}">${pHTML}</div>`:''}
                 </div>`;
+            });
+            html+='</div>';
         }
+        section.innerHTML = html;
+    }
 
-        function escapeHtml(str) {
-            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    // ═══════════════════════════════════════
+    // MANIFEST
+    // ═══════════════════════════════════════
+
+    async function loadManifest() {
+        try {
+            const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${MANIFEST_PATH}?t=${Date.now()}`);
+            manifest = r.ok ? await r.json() : [];
+        } catch(e) { manifest=[]; }
+        renderCalendar();
+        if (selDate) renderDayPhotos(selDate);
+    }
+
+    // ═══════════════════════════════════════
+    // UPLOAD
+    // ═══════════════════════════════════════
+
+    function onUploadFabClick() {
+        currentUser ? openUploadModal() : openPasswordModal();
+    }
+
+    function openPasswordModal() {
+        document.getElementById('passwordOverlay').classList.add('active');
+        setTimeout(()=>document.getElementById('passwordInput').focus(),300);
+    }
+    function closePasswordModal() {
+        document.getElementById('passwordOverlay').classList.remove('active');
+        document.getElementById('passwordInput').value='';
+        document.getElementById('passwordError').textContent='';
+    }
+
+    async function checkPassword() {
+        const val = document.getElementById('passwordInput').value;
+        const err = document.getElementById('passwordError');
+        const inp = document.getElementById('passwordInput');
+        const hash = await hashStr(val);
+        const user = USERS[hash];
+        if (user) {
+            currentUser=user; closePasswordModal(); setTimeout(openUploadModal,320);
+        } else {
+            err.textContent='Incorrect password. Try again.';
+            inp.classList.add('error');
+            setTimeout(()=>{inp.classList.remove('error');err.textContent='';},1500);
         }
+    }
 
-        // --- Lightbox ---
-        function openLightbox(src) {
-            document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightbox').classList.add('active');
-        }
+    let selFiles=[];
 
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-        }
+    function openUploadModal() {
+        selFiles=[];
+        document.getElementById('previewGrid').innerHTML='';
+        document.getElementById('captionInput').value='';
+        document.getElementById('uploadProgress').style.display='none';
+        document.getElementById('submitBtn').disabled=false;
+        document.getElementById('progressFill').style.width='0%';
+        const d = selDate||fmtDate(today.getFullYear(),today.getMonth(),today.getDate());
+        const p = d.split('-');
+        document.getElementById('uploadForDateLabel').textContent =
+            `📅  ${MONTH_NAMES[parseInt(p[1])-1]} ${parseInt(p[2])}, ${p[0]}`;
+        document.getElementById('uploadOverlay').classList.add('active');
+    }
+    function closeUploadModal() { document.getElementById('uploadOverlay').classList.remove('active'); }
 
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                closeLightbox();
-                closePasswordModal();
-                closeUploadModal();
-            }
+    const dz = document.getElementById('dropzone');
+    dz.addEventListener('dragover',  e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',      e=>{e.preventDefault();dz.classList.remove('drag-over');handleFileSelect(e.dataTransfer.files);});
+
+    function handleFileSelect(files) {
+        Array.from(files).slice(0,10-selFiles.length).forEach(f=>{
+            if(!f.type.startsWith('image/'))return;
+            selFiles.push(f);
+            const r=new FileReader();
+            r.onload=e=>addThumb(e.target.result,selFiles.length-1);
+            r.readAsDataURL(f);
         });
+    }
 
-        // Load gallery on page load
-        loadGallery();
+    function addThumb(src,i){
+        const g=document.getElementById('previewGrid');
+        const d=document.createElement('div');
+        d.className='upload-preview-thumb';
+        d.innerHTML=`<img src="${src}"><button class="remove-thumb" onclick="removeThumb(${i})">&#10005;</button>`;
+        g.appendChild(d);
+    }
+
+    function removeThumb(i){
+        selFiles.splice(i,1);
+        document.getElementById('previewGrid').innerHTML='';
+        selFiles.forEach((_,j)=>{const r=new FileReader();r.onload=e=>addThumb(e.target.result,j);r.readAsDataURL(selFiles[j]);});
+    }
+
+    async function submitUpload() {
+        if(!selFiles.length){alert('Please select at least one photo 📸');return;}
+        const uploadDate = selDate||fmtDate(today.getFullYear(),today.getMonth(),today.getDate());
+        const caption    = document.getElementById('captionInput').value.trim();
+        const btn  = document.getElementById('submitBtn');
+        const prog = document.getElementById('uploadProgress');
+        const fill = document.getElementById('progressFill');
+        const lbl  = document.getElementById('progressLabel');
+        btn.disabled=true; prog.style.display='block';
+
+        const folder = `photos/${uploadDate}/${currentUser.id}`;
+        const paths  = [];
+
+        try {
+            for(let i=0;i<selFiles.length;i++){
+                fill.style.width=Math.round(i/selFiles.length*80)+'%';
+                lbl.textContent=`Uploading photo ${i+1} of ${selFiles.length}…`;
+                const f=selFiles[i], b64=await f2b64(f);
+                const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+                const fp=`${folder}/photo_${i+1}.${ext}`;
+                await ghPut(fp,b64,'Add memory photo');
+                paths.push(fp);
+            }
+            fill.style.width='90%'; lbl.textContent='Saving memory…';
+            await updateManifest({date:uploadDate,user:currentUser.id,caption:caption||'💕',photos:paths,time:new Date().toTimeString().slice(0,5)});
+            fill.style.width='100%'; lbl.textContent='Done! 🌸';
+            setTimeout(async()=>{
+                closeUploadModal();
+                await loadManifest();
+                selDate=uploadDate;
+                const pts=uploadDate.split('-');
+                calYear=parseInt(pts[0]); calMonth=parseInt(pts[1])-1;
+                document.getElementById('calMonthSelect').value=calMonth;
+                document.getElementById('calYearSelect').value=calYear;
+                renderCalendar(); renderDayPhotos(uploadDate);
+            },700);
+        } catch(err){
+            console.error(err);
+            lbl.textContent='❌ Upload failed. Check your connection.';
+            btn.disabled=false;
+        }
+    }
+
+    function f2b64(file){
+        return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
+    }
+
+    async function ghPut(path,b64,msg){
+        let sha=null;
+        try{const c=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});if(c.ok)sha=(await c.json()).sha;}catch(e){}
+        const body={message:msg,content:b64,branch:GITHUB_BRANCH};if(sha)body.sha=sha;
+        const res=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(!res.ok){const e=await res.json();throw new Error(e.message);}
+        return res.json();
+    }
+
+    async function updateManifest(entry){
+        let entries=[],sha=null;
+        try{const r=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});if(r.ok){const d=await r.json();sha=d.sha;entries=JSON.parse(atob(d.content.replace(/\n/g,'')));}}catch(e){}
+        const idx=entries.findIndex(e=>e.date===entry.date&&e.user===entry.user);
+        if(idx>=0)entries[idx]=entry; else entries.unshift(entry);
+        const content=btoa(unescape(encodeURIComponent(JSON.stringify(entries,null,2))));
+        const body={message:'Update photo manifest',content,branch:GITHUB_BRANCH};if(sha)body.sha=sha;
+        const res=await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${MANIFEST_PATH}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(!res.ok)throw new Error('Failed to update manifest');
+    }
+
+    // ═══════════════════════════════════════
+    // LIGHTBOX + UTILS
+    // ═══════════════════════════════════════
+
+    function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('active');}
+    function closeLightbox(){document.getElementById('lightbox').classList.remove('active');}
+    function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+    document.addEventListener('keydown',e=>{
+        if(e.key==='Escape'){closeLightbox();closePasswordModal();closeUploadModal();}
+    });
+
+    // ═══════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════
+
+    updateCounter();
+    updateQuote();
+    applySpecialDay();
+    createSparkles();
+    setInterval(updateCounter, 60000);
+    setInterval(updateQuote,   3600000);
+    setInterval(spawnHeart,    (isWeddingDay()||isAnniversaryDay()) ? 400 : 700);
+
+    initYearSelect();
+    renderCalendar();
+    const todayStr = fmtDate(today.getFullYear(), today.getMonth(), today.getDate());
+    selectDay(todayStr);
+    loadManifest();
     </script>
 </body>
 </html>
